@@ -1,0 +1,54 @@
+root: true
+env:
+  es2022: true
+  node: true
+ignorePatterns:
+  - /config/build.mjs
+plugins:
+  - '@typescript-eslint'
+  - unicorn
+extends:
+  - eslint:recommended
+  - standard-with-typescript
+  - prettier
+  - plugin:unicorn/recommended
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project: './tsconfig.json'
+rules:
+  semi: off
+
+  unicorn/no-null: off
+  unicorn/prevent-abbreviations: off
+  unicorn/filename-case: off
+  unicorn/no-useless-undefined: off
+  unicorn/prefer-top-level-await: off
+  unicorn/prefer-module: off
+  unicorn/no-process-exit: off
+  unicorn/catch-error-name:
+    - error
+    - name: err
+
+  '@typescript-eslint/array-type':
+    - error
+    - default: array
+      readonly: array
+  '@typescript-eslint/restrict-template-expressions':
+    - error
+    - allowNumber: true
+      allowBoolean: true
+      allowAny: true
+      allowNullish: false
+      allowRegExp: true
+  '@typescript-eslint/no-unnecessary-condition': error
+  '@typescript-eslint/explicit-function-return-type': off
+  '@typescript-eslint/consistent-type-definitions': off
+  '@typescript-eslint/no-misused-promises': off
+  '@typescript-eslint/no-non-null-assertion': off
+  '@typescript-eslint/no-invalid-void-type': off
+  '@typescript-eslint/prefer-ts-expect-error': off
+  '@typescript-eslint/consistent-type-imports': error
+  '@typescript-eslint/ban-types': off
+  '@typescript-eslint/ban-ts-comment': off
+  '@typescript-eslint/no-import-type-side-effects': error
+  '@typescript-eslint/triple-slash-reference': off

@@ -1,0 +1,9 @@
+/node_modules
+/tmp
+/src
+/config
+/.vscode
+
+/tsconfig*.json
+/yarn.lock
+/bun.lockb
