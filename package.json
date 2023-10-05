@@ -1,7 +1,7 @@
 {
-  "name": "reizt-ts-pkg-base",
-  "version": "0.0.0",
-  "repository": "git@github.com:reizt/ts-pkg.git",
+  "name": "dynmr",
+  "version": "1.0.1",
+  "repository": "git@github.com:reizt/dynmr.git",
   "author": "reizt <reizt.dev@gmail.com>",
   "license": "MIT",
   "type": "commonjs",
@@ -26,7 +26,7 @@
     "build": "run-s clean build:* && cp package.json .pkg",
     "build:cjs": "tsc -p tsconfig.cjs.json && echo '{\"type\": \"commonjs\"}' > .pkg/cjs/package.json",
     "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\": \"module\"}' > .pkg/esm/package.json",
-    "clean": "rm -rf .pkg/**/*",
+    "clean": "for f in .pkg/*; do rm -rf $f; done",
     "dev": "nodemon --exec \"run-s dev:build dev:start\" --watch src --ext ts --delay 0.2",
     "dev:build": "node config/build.mjs development",
     "dev:start": "node --enable-source-maps .build/development.js",
@@ -37,10 +37,14 @@
     "prettier:l": "prettier --check --log-level silent src",
     "prettier:f": "prettier --write --log-level silent src",
     "tsc:l": "tsc --noEmit --outDir .build",
+    "tsc:w": "tsc --noEmit --outDir .build --watch",
     "vt": "vitest --config config/vitest.config.ts",
     "test": "npm run vt run",
     "test:watch": "npm run vt watch",
     "test:cov": "npm run vt run --coverage && open coverage/index.html"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.423.0"
   },
   "devDependencies": {
     "@types/node": "^20.6.2",

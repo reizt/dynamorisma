@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["config/*.ts"],
+  "exclude": ["config/*.ts", "example/*.ts"],
   "compilerOptions": {
     "outDir": "./.pkg/esm",
     "incremental": false
