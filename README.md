@@ -1,6 +1,16 @@
+Dynmr is a library to use AWS DynamoDB type-safely.
+
+## Getting Started
+
+```sh
+npm i dynmr @aws-sdk/client-dynamodb
+```
+
+## Example
+
+```ts
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { createDynmr } from '../src/client';
-import type { DynmrSchema } from '../src/types/repo';
+import { type DynmrSchema, createDynmr } from 'dynmr';
 
 const config = {
   user: {
@@ -17,7 +27,7 @@ const client = createDynmr({
   schema: config,
 });
 
-const { entity: user } = await client.user.pick({
+const { entity: user, dynmrId } = await client.user.pick({
   where: { id: { eq: 'xxx' } },
 });
 
@@ -25,7 +35,7 @@ if (user == null) {
   throw new Error('user not found');
 }
 
-const { dynmrId } = await client.user.put({
+await client.user.put({
   ent: {
     ...user,
     age: user.age + 1,
@@ -33,3 +43,4 @@ const { dynmrId } = await client.user.put({
 });
 
 await client.user.del({ dynmrId });
+```
