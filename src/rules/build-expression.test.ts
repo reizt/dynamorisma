@@ -4,21 +4,21 @@ describe(buildExpression.name, () => {
   describe('operators', () => {
     test('attribute_exists', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'attribute_exists' },
+        condition: { attrName: 'foo_bar', operator: 'attribute_exists' },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.expression).toEqual('attribute_exists (#foo_bar)');
     });
     test('attribute_not_exists', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'attribute_not_exists' },
+        condition: { attrName: 'foo_bar', operator: 'attribute_not_exists' },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.expression).toEqual('attribute_not_exists (#foo_bar)');
     });
     test('attribute_type', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'attribute_type', type: 'S' },
+        condition: { attrName: 'foo_bar', operator: 'attribute_type', type: 'S' },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'S' } });
@@ -26,7 +26,7 @@ describe(buildExpression.name, () => {
     });
     test('=', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '=', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '=', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -34,7 +34,7 @@ describe(buildExpression.name, () => {
     });
     test('<>', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '<>', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '<>', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -42,7 +42,7 @@ describe(buildExpression.name, () => {
     });
     test('<', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '<', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '<', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -50,7 +50,7 @@ describe(buildExpression.name, () => {
     });
     test('<=', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '<=', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '<=', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -58,7 +58,7 @@ describe(buildExpression.name, () => {
     });
     test('>', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '>', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '>', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -66,7 +66,7 @@ describe(buildExpression.name, () => {
     });
     test('>=', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '>=', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '>=', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -74,14 +74,14 @@ describe(buildExpression.name, () => {
     });
     test('size', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: '=', computedValue: 'size', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: '=', computedValue: 'size', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.expression).toEqual('size(#foo_bar) = :foo_bar');
     });
     test('begins_with', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'begins_with', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: 'begins_with', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -89,7 +89,7 @@ describe(buildExpression.name, () => {
     });
     test('contains', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'contains', value: { S: 'baz' } },
+        condition: { attrName: 'foo_bar', operator: 'contains', value: { S: 'baz' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar': { S: 'baz' } });
@@ -97,7 +97,7 @@ describe(buildExpression.name, () => {
     });
     test('between', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'between', valueFrom: { S: 'baz' }, valueTo: { S: 'qux' } },
+        condition: { attrName: 'foo_bar', operator: 'between', valueFrom: { S: 'baz' }, valueTo: { S: 'qux' } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar_from': { S: 'baz' }, ':foo_bar_to': { S: 'qux' } });
@@ -105,7 +105,7 @@ describe(buildExpression.name, () => {
     });
     test('in', () => {
       const q = buildExpression({
-        condition: { name: 'foo_bar', operator: 'in', valueIn: { SS: ['baz', 'qux'] } },
+        condition: { attrName: 'foo_bar', operator: 'in', valueIn: { SS: ['baz', 'qux'] } },
       });
       expect(q.names).toEqual({ '#foo_bar': 'foo_bar' });
       expect(q.values).toEqual({ ':foo_bar_0': { S: 'baz' }, ':foo_bar_1': { S: 'qux' } });
@@ -118,14 +118,14 @@ describe(buildExpression.name, () => {
         and: [
           {
             condition: {
-              name: 'foo',
+              attrName: 'foo',
               operator: '=',
               value: { S: 'bar' },
             },
           },
           {
             condition: {
-              name: 'baz',
+              attrName: 'baz',
               operator: '=',
               value: { S: 'qux' },
             },
@@ -141,14 +141,14 @@ describe(buildExpression.name, () => {
         or: [
           {
             condition: {
-              name: 'foo',
+              attrName: 'foo',
               operator: '=',
               value: { S: 'bar' },
             },
           },
           {
             condition: {
-              name: 'baz',
+              attrName: 'baz',
               operator: '=',
               value: { S: 'qux' },
             },
@@ -163,7 +163,7 @@ describe(buildExpression.name, () => {
       const q = buildExpression({
         not: {
           condition: {
-            name: 'foo',
+            attrName: 'foo',
             operator: '=',
             value: { S: 'bar' },
           },
@@ -178,7 +178,7 @@ describe(buildExpression.name, () => {
         and: [
           {
             condition: {
-              name: 'foo',
+              attrName: 'foo',
               operator: '=',
               value: { S: 'bar' },
             },
@@ -187,14 +187,14 @@ describe(buildExpression.name, () => {
             and: [
               {
                 condition: {
-                  name: 'baz',
+                  attrName: 'baz',
                   operator: '=',
                   value: { S: 'qux' },
                 },
               },
               {
                 condition: {
-                  name: 'quux',
+                  attrName: 'quux',
                   operator: '=',
                   value: { S: 'corge' },
                 },

@@ -35,14 +35,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propS',
+              attrName: 'Ent_propS',
               operator: '=',
               value: { S: 'propS_eq' },
             },
@@ -60,14 +60,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propS',
+              attrName: 'Ent_propS',
               operator: '<>',
               value: { S: 'propS_ne' },
             },
@@ -85,14 +85,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propS',
+              attrName: 'Ent_propS',
               operator: 'begins_with',
               value: { S: 'propS_beginsWith' },
             },
@@ -110,14 +110,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propS',
+              attrName: 'Ent_propS',
               operator: 'contains',
               value: { S: 'propS_contains' },
             },
@@ -135,14 +135,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: '>',
               value: { N: '1' },
             },
@@ -160,14 +160,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: '>=',
               value: { N: '1' },
             },
@@ -185,14 +185,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: '<',
               value: { N: '1' },
             },
@@ -210,14 +210,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: '<=',
               value: { N: '1' },
             },
@@ -235,14 +235,14 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: 'between',
               valueFrom: { N: '1' },
               valueTo: { N: '2' },
@@ -264,21 +264,21 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
-              name: entNameAttrName,
+              attrName: entNameAttrName,
               operator: '=',
               value: { S: entName },
             },
           },
           {
             condition: {
-              name: 'Ent_propS',
+              attrName: 'Ent_propS',
               operator: '=',
               value: { S: 'propS_eq' },
             },
           },
           {
             condition: {
-              name: 'Ent_propN',
+              attrName: 'Ent_propN',
               operator: '>',
               value: { N: '1' },
             },

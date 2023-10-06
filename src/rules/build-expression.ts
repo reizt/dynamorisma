@@ -2,15 +2,15 @@ import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { marshallValue } from '../utils/marshall';
 
 type Nev<T> = { [K in keyof T]?: undefined };
-type ObjectIntersect<X, Y, Z, W> =
+type FourObjIntersect<X, Y, Z, W> =
   | (X & Nev<Y> & Nev<Z> & Nev<W>)
   | (Y & Nev<X> & Nev<Z> & Nev<W>)
   | (Z & Nev<X> & Nev<Y> & Nev<W>)
   | (W & Nev<X> & Nev<Y> & Nev<Z>);
-export type Conditions = ObjectIntersect<{ and: Conditions[] }, { or: Conditions[] }, { not: Conditions }, { condition: Condition }>;
+export type Conditions = FourObjIntersect<{ and: Conditions[] }, { or: Conditions[] }, { not: Conditions }, { condition: Condition }>;
 
 export type Condition = {
-  name: string;
+  attrName: string;
 } & (
   | {
       operator: 'attribute_exists' | 'attribute_not_exists';
@@ -84,8 +84,8 @@ export const buildExpression = (conds: Conditions): Output => {
   const values: Record<string, AttributeValue> = {};
   const operator = conds.condition.operator;
 
-  const keyAlt = `#${conds.condition.name}`;
-  names[keyAlt] = conds.condition.name;
+  const keyAlt = `#${conds.condition.attrName}`;
+  names[keyAlt] = conds.condition.attrName;
 
   let expression: string;
   switch (operator) {
@@ -95,7 +95,7 @@ export const buildExpression = (conds: Conditions): Output => {
       break;
     }
     case 'attribute_type': {
-      const valueAlt = `:${conds.condition.name}`;
+      const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = { S: conds.condition.type };
       expression = `${operator} (${keyAlt}, ${valueAlt})`;
       break;
@@ -106,7 +106,7 @@ export const buildExpression = (conds: Conditions): Output => {
     case '<=':
     case '>':
     case '>=': {
-      const valueAlt = `:${conds.condition.name}`;
+      const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = conds.condition.value;
       if (conds.condition.computedValue === 'size') {
         expression = `size(${keyAlt}) ${operator} ${valueAlt}`;
@@ -117,14 +117,14 @@ export const buildExpression = (conds: Conditions): Output => {
     }
     case 'begins_with':
     case 'contains': {
-      const valueAlt = `:${conds.condition.name}`;
+      const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = conds.condition.value;
       expression = `${operator}(${keyAlt}, ${valueAlt})`;
       break;
     }
     case 'between': {
-      const valueAltFrom = `:${conds.condition.name}_from`;
-      const valueAltTo = `:${conds.condition.name}_to`;
+      const valueAltFrom = `:${conds.condition.attrName}_from`;
+      const valueAltTo = `:${conds.condition.attrName}_to`;
       values[valueAltFrom] = conds.condition.valueFrom;
       values[valueAltTo] = conds.condition.valueTo;
       expression = `${keyAlt} BETWEEN ${valueAltFrom} AND ${valueAltTo}`;
@@ -132,7 +132,7 @@ export const buildExpression = (conds: Conditions): Output => {
     }
     case 'in': {
       const valueAlts: string[] = [];
-      const valueAltPrefix = `:${conds.condition.name}`;
+      const valueAltPrefix = `:${conds.condition.attrName}`;
       const valueIn = conds.condition.valueIn.SS ?? conds.condition.valueIn.NS ?? conds.condition.valueIn.BS ?? conds.condition.valueIn.L;
       for (let i = 0; i < valueIn.length; i++) {
         const valueAlt = `${valueAltPrefix}_${i}`;

@@ -13,12 +13,10 @@ type Args<E extends EntConfig> = {
   input: CollectIn<E>;
 };
 export const collect = async <E extends EntConfig>({ entName, entSchema, input }: Args<E>, ctx: Context): Promise<CollectOut<E>> => {
-  const where = input.where;
-
   let conds: Conditions | undefined;
   let q: ReturnType<typeof buildExpression> | undefined;
-  if (where != null) {
-    conds = buildConditions(entName, entSchema, where);
+  if (input.where != null) {
+    conds = buildConditions(entName, entSchema, input.where);
     q = buildExpression(conds);
   }
 
