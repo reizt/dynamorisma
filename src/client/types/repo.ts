@@ -1,7 +1,6 @@
-import type { AttributeValue } from '@aws-sdk/client-dynamodb';
-import type { EntConfig, EntName, InferEnt, InferProp, PropConfig } from './config';
+import type { EntConfig, InferEnt, InferProp, PropConfig } from './config';
 
-export type DynmrSchema = Record<EntName, EntConfig>;
+export type DynmrSchema = Record<string, EntConfig>;
 export type Dynmr<S extends DynmrSchema> = {
   [E in keyof S]: EntRepo<S[E]>;
 };
@@ -18,13 +17,11 @@ export type EntRepo<E extends EntConfig> = {
 export type CollectIn<E extends EntConfig> = {
   where?: Where<E>;
   scanLimit?: number;
-  exclusiveStartKey?: AttributeValue;
   gsi?: AvailableGsiPropName<E>;
 };
 export type CollectOut<E extends EntConfig> = {
   entities: InferEnt<E>[];
   dynmrIds: string[];
-  lastEvaluatedKey?: AttributeValue;
 };
 export type AvailableGsiPropName<E extends EntConfig> = keyof {
   [K in keyof E as E[K]['gsi'] extends true ? K : never]: K;

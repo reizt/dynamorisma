@@ -4,6 +4,7 @@ import { newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
 import { buildExpression } from '../builder/build-expression';
+import { minifyConditions } from '../builder/minify-conditions';
 import type { EntConfig } from '../types/config';
 import type { CollectIn, CollectOut } from '../types/repo';
 import { unmarshallEnt } from '../utils/unmarshall';
@@ -26,8 +27,10 @@ export const collect = async <E extends EntConfig>({ entName, entConfig, input }
       where: input.where,
       gsiPropName: input.gsi,
     });
-    const filterQ = out.filterConditions != null ? buildExpression(out.filterConditions) : undefined;
-    const keyQ = out.keyConditions != null ? buildExpression(out.keyConditions) : undefined;
+    const minFilterConds = out.filterConditions != null ? minifyConditions(out.filterConditions) : undefined;
+    const minKeyConds = out.keyConditions != null ? minifyConditions(out.keyConditions) : undefined;
+    const filterQ = minFilterConds != null ? buildExpression(minFilterConds) : undefined;
+    const keyQ = minKeyConds != null ? buildExpression(minKeyConds) : undefined;
     ExpressionAttributeNames = { ...filterQ?.names, ...keyQ?.names };
     ExpressionAttributeValues = { ...filterQ?.values, ...keyQ?.values };
     FilterExpression = filterQ?.expression;

@@ -1,7 +1,4 @@
-export type EntName = string;
-export type PropName = string;
-
-export type EntConfig = Record<PropName, PropConfig>;
+export type EntConfig = Record<string, PropConfig>;
 export type PropConfig = {
   optional?: true;
   gsi?: true;

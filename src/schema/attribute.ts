@@ -1,5 +1,3 @@
-import type { EntName, PropName } from '../client/types/config';
-
-export const newAttributeName = (entName: EntName, propName: PropName): string => {
+export const newAttributeName = (entName: string, propName: string): string => {
   return `${entName}_${propName}`;
 };

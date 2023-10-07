@@ -1,5 +1,5 @@
 export { createDynmr, type DynmrInit } from './src/client';
-export type { EntConfig, EntName, InferEnt, InferProp, PropConfig, PropName } from './src/client/types/config';
+export type { EntConfig, InferEnt, InferProp, PropConfig } from './src/client/types/config';
 export type {
   CollectIn,
   CollectOut,
