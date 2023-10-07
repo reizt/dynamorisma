@@ -1,8 +1,8 @@
+import { entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { Where } from '../types/repo';
 import { buildConditions } from './build-conditions';
 import type { Conditions } from './build-expression';
-import { entNameAttrName } from './id';
 
 describe(buildConditions.name, () => {
   // describe('conditions', () => {

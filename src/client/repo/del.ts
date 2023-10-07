@@ -1,6 +1,6 @@
 import { DeleteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../context';
-import { dynmrIdAttrName } from '../rules/id';
+import type { Context } from '../../context';
+import { dynmrIdAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { DelIn, DelOut } from '../types/repo';
 

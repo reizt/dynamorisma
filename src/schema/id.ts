@@ -6,7 +6,7 @@ export const entNameAttrName = '__entName';
 const len = 8;
 
 export const newDynmrId = (): string => {
-  const idChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+  const idChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
   let buf = randomBytes(len);
   // randomBytes may return less than len buf
   while (buf.length < len) {

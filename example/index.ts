@@ -1,6 +1,6 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { createDynmr } from '../src/client';
-import type { DynmrSchema } from '../src/types/repo';
+import type { DynmrSchema } from '../src/client/types/repo';
 
 const config = {
   user: {

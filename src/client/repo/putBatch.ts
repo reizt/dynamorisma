@@ -1,7 +1,7 @@
 import { BatchWriteItemCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../context';
-import { buildItem } from '../rules/build-item';
-import { newDynmrId } from '../rules/id';
+import type { Context } from '../../context';
+import { newDynmrId } from '../../schema/id';
+import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
 import type { EntRepo, PutManyIn } from '../types/repo';
 

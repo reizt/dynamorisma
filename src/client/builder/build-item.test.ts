@@ -1,7 +1,7 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
+import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig, InferEnt } from '../types/config';
 import { buildItem } from './build-item';
-import { dynmrIdAttrName, entNameAttrName } from './id';
 
 describe(buildItem.name, () => {
   it('should return an object with the correct keys', () => {

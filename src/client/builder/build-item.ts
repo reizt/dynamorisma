@@ -1,8 +1,8 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
+import { newAttributeName } from '../../schema/attribute';
+import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig, InferEnt } from '../types/config';
 import { marshallValue } from '../utils/marshall';
-import { newAttributeName } from './attribute';
-import { dynmrIdAttrName, entNameAttrName } from './id';
 
 export const buildItem = <E extends EntConfig>(entName: string, entConfig: E, ent: InferEnt<E>, dynmrId: string): Record<string, AttributeValue> => {
   const item: Record<string, AttributeValue> = {};

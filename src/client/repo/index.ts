@@ -1,4 +1,4 @@
-import type { Context } from '../context';
+import type { Context } from '../../context';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
 import { collect } from './collect';

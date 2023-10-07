@@ -1,5 +1,5 @@
 import type { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import type { Context } from './context';
+import type { Context } from '../context';
 import { createEntRepo } from './repo';
 import type { Dynmr, DynmrSchema } from './types/repo';
 

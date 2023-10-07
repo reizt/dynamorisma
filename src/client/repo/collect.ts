@@ -1,9 +1,9 @@
 import { QueryCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../context';
-import { buildConditions } from '../rules/build-conditions';
-import { buildExpression } from '../rules/build-expression';
-import { newGsiName } from '../rules/gsi';
-import { dynmrIdAttrName } from '../rules/id';
+import type { Context } from '../../context';
+import { newGsiName } from '../../schema/gsi';
+import { dynmrIdAttrName } from '../../schema/id';
+import { buildConditions } from '../builder/build-conditions';
+import { buildExpression } from '../builder/build-expression';
 import type { EntConfig } from '../types/config';
 import type { CollectIn, CollectOut } from '../types/repo';
 import { unmarshallEnt } from '../utils/unmarshall';

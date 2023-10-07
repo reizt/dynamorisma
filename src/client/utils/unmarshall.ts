@@ -1,5 +1,5 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
-import { newAttributeName } from '../rules/attribute';
+import { newAttributeName } from '../../schema/attribute';
 import type { EntConfig, InferEnt } from '../types/config';
 
 export const unmarshallValue = (value: AttributeValue): any => {
