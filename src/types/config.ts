@@ -4,6 +4,7 @@ export type PropName = string;
 export type EntConfig = Record<PropName, PropConfig>;
 export type PropConfig = {
   optional?: true;
+  gsi?: true;
 } & (
   | {
       type: 'S';

@@ -7,17 +7,17 @@ import type { EntRepo, PutManyIn } from '../types/repo';
 
 type Args<E extends EntConfig> = {
   entName: string;
-  entSchema: E;
+  entConfig: E;
   input: PutManyIn<E>;
 };
-export const putBatch = async <E extends EntConfig>({ entName, entSchema, input }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['putBatch']> => {
+export const putBatch = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['putBatch']> => {
   const items: Record<string, AttributeValue>[] = [];
   const dynmrIds: string[] = [];
 
   for (const ent of input.entities) {
     const dynmrId = newDynmrId();
     dynmrIds.push(dynmrId);
-    const item = buildItem(entName, entSchema, ent, dynmrId);
+    const item = buildItem(entName, entConfig, ent, dynmrId);
     items.push(item);
   }
 

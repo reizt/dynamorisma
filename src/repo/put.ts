@@ -7,14 +7,14 @@ import type { EntRepo, PutIn } from '../types/repo';
 
 type Args<E extends EntConfig> = {
   entName: string;
-  entSchema: E;
+  entConfig: E;
   input: PutIn<E>;
 };
-export const put = async <E extends EntConfig>({ entName, entSchema, input }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['put']> => {
+export const put = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['put']> => {
   const ent = input.ent;
 
   const dynmrId = newDynmrId();
-  const item = buildItem(entName, entSchema, ent, dynmrId);
+  const item = buildItem(entName, entConfig, ent, dynmrId);
 
   const command = new PutItemCommand({
     TableName: ctx.tableName,

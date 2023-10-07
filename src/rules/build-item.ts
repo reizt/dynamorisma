@@ -4,13 +4,13 @@ import { marshallValue } from '../utils/marshall';
 import { newAttributeName } from './attribute';
 import { dynmrIdAttrName, entNameAttrName } from './id';
 
-export const buildItem = <E extends EntConfig>(entName: string, entSchema: E, ent: InferEnt<E>, dynmrId: string): Record<string, AttributeValue> => {
+export const buildItem = <E extends EntConfig>(entName: string, entConfig: E, ent: InferEnt<E>, dynmrId: string): Record<string, AttributeValue> => {
   const item: Record<string, AttributeValue> = {};
 
   item[dynmrIdAttrName] = { S: dynmrId };
   item[entNameAttrName] = { S: entName };
 
-  for (const propName in entSchema) {
+  for (const propName in entConfig) {
     const attrName = newAttributeName(entName, propName);
     if (!(propName in ent)) continue;
     const propValue = ent[propName as unknown as keyof InferEnt<E>];

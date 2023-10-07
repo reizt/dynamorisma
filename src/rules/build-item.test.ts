@@ -6,17 +6,17 @@ import { dynmrIdAttrName, entNameAttrName } from './id';
 describe(buildItem.name, () => {
   it('should return an object with the correct keys', () => {
     const entName = 'EntName';
-    const entSchema = {
+    const entConfig = {
       foo: { type: 'S' },
       bar: { type: 'N' },
     } satisfies EntConfig;
-    const ent: InferEnt<typeof entSchema> = {
+    const ent: InferEnt<typeof entConfig> = {
       foo: 'foo',
       bar: 1,
     };
     const dynmrId = 'xxx';
 
-    const item = buildItem(entName, entSchema, ent, dynmrId);
+    const item = buildItem(entName, entConfig, ent, dynmrId);
     const want: Record<string, AttributeValue> = {
       [dynmrIdAttrName]: { S: dynmrId },
       [entNameAttrName]: { S: entName },

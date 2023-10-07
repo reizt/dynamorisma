@@ -6,10 +6,10 @@ import type { DelIn, DelOut } from '../types/repo';
 
 type Args<E extends EntConfig> = {
   entName: string;
-  entSchema: E;
+  entConfig: E;
   input: DelIn<E>;
 };
-export const del = async <E extends EntConfig>({ entName, entSchema, input }: Args<E>, ctx: Context): Promise<DelOut<E>> => {
+export const del = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<DelOut<E>> => {
   const command = new DeleteItemCommand({
     TableName: ctx.tableName,
     Key: {

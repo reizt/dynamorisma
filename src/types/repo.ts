@@ -17,13 +17,17 @@ export type EntRepo<E extends EntConfig> = {
 
 export type CollectIn<E extends EntConfig> = {
   where?: Where<E>;
-  limit?: number;
+  scanLimit?: number;
   exclusiveStartKey?: AttributeValue;
+  gsi?: AvailableGsiPropName<E>;
 };
 export type CollectOut<E extends EntConfig> = {
   entities: InferEnt<E>[];
   dynmrIds: string[];
   lastEvaluatedKey?: AttributeValue;
+};
+export type AvailableGsiPropName<E extends EntConfig> = keyof {
+  [K in keyof E as E[K]['gsi'] extends true ? K : never]: K;
 };
 
 export type PickIn<E extends EntConfig> = {
@@ -64,20 +68,20 @@ export type DelManyIn<E extends EntConfig> = {
 // eslint-disable-next-line no-unused-vars
 export type DelManyOut<E extends EntConfig> = void;
 
-type NeverObj<T extends Record<string, any>> = {
-  [K in keyof T]: never;
-};
-type KeysHavingIntersect<X extends Record<string, any>, Y extends Record<string, any>> = (X & NeverObj<Y>) | (Y & NeverObj<X>);
+type Obj = Record<string, unknown>;
+type Nev<T extends Obj> = { [K in keyof T]?: undefined };
+type FourObjIntersect<X extends Obj, Y extends Obj, Z extends Obj, W extends Obj> =
+  | (X & Nev<Y> & Nev<Z> & Nev<W>)
+  | (Y & Nev<X> & Nev<Z> & Nev<W>)
+  | (Z & Nev<X> & Nev<Y> & Nev<W>)
+  | (W & Nev<X> & Nev<Y> & Nev<Z>);
 
-export type Where<E extends EntConfig> = KeysHavingIntersect<
-  {
-    [K in keyof E]?: Filter<E[K]>;
-  },
-  {
-    AND?: Where<E>[];
-    OR?: Where<E>[];
-    NOT?: Where<E>;
-  }
+export type Where<E extends EntConfig> = FourObjIntersect<
+  // One of the following:
+  { [K in keyof E]?: Filter<E[K]> },
+  { AND: Where<E>[] },
+  { OR: Where<E>[] },
+  { NOT: Where<E> }
 >;
 
 export type Filter<P extends PropConfig> = {

@@ -1,48 +1,55 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { marshallValue } from '../utils/marshall';
 
-type Nev<T> = { [K in keyof T]?: undefined };
-type FourObjIntersect<X, Y, Z, W> =
+type Obj = Record<string, unknown>;
+type Nev<T extends Obj> = { [K in keyof T]?: undefined };
+type FourObjIntersect<X extends Obj, Y extends Obj, Z extends Obj, W extends Obj> =
   | (X & Nev<Y> & Nev<Z> & Nev<W>)
   | (Y & Nev<X> & Nev<Z> & Nev<W>)
   | (Z & Nev<X> & Nev<Y> & Nev<W>)
   | (W & Nev<X> & Nev<Y> & Nev<Z>);
-export type Conditions = FourObjIntersect<{ and: Conditions[] }, { or: Conditions[] }, { not: Conditions }, { condition: Condition }>;
+export type Conditions = FourObjIntersect<
+  // One of the following:
+  { and: Conditions[] },
+  { or: Conditions[] },
+  { not: Conditions },
+  { condition: Condition }
+>;
 
-export type Condition = {
-  attrName: string;
-} & (
+export type ConditionWithoutAttrName =
   | {
-      operator: 'attribute_exists' | 'attribute_not_exists';
+      opr: 'attribute_exists' | 'attribute_not_exists';
     }
   | {
-      operator: 'attribute_type';
+      opr: 'attribute_type';
       type: 'S' | 'SS' | 'N' | 'NS' | 'B' | 'BS' | 'BOOL' | 'L' | 'M';
     }
   | {
-      operator: '=' | '<>';
+      opr: '=' | '<>';
       value: AttributeValue;
       computedValue?: 'size';
     }
   | {
-      operator: '<' | '<=' | '>' | '>=';
+      opr: '<' | '<=' | '>' | '>=';
       value: AttributeValue.NMember | AttributeValue.SMember;
       computedValue?: 'size';
     }
   | {
-      operator: 'begins_with' | 'contains';
+      opr: 'begins_with' | 'contains';
       value: AttributeValue.SMember;
     }
   | {
-      operator: 'in';
+      opr: 'in';
       valueIn: AttributeValue.SSMember | AttributeValue.NSMember | AttributeValue.BSMember | AttributeValue.LMember;
     }
   | {
-      operator: 'between';
+      opr: 'between';
       valueFrom: AttributeValue.NMember | AttributeValue.SMember;
       valueTo: AttributeValue.NMember | AttributeValue.SMember;
-    }
-);
+    };
+export type Condition = {
+  attrName: string;
+} & ConditionWithoutAttrName;
 
 type Output = {
   names: Record<string, string> | undefined;
@@ -82,22 +89,22 @@ export const buildExpression = (conds: Conditions): Output => {
 
   const names: Record<string, string> = {};
   const values: Record<string, AttributeValue> = {};
-  const operator = conds.condition.operator;
+  const opr = conds.condition.opr;
 
   const keyAlt = `#${conds.condition.attrName}`;
   names[keyAlt] = conds.condition.attrName;
 
   let expression: string;
-  switch (operator) {
+  switch (opr) {
     case 'attribute_exists':
     case 'attribute_not_exists': {
-      expression = `${operator} (${keyAlt})`;
+      expression = `${opr} (${keyAlt})`;
       break;
     }
     case 'attribute_type': {
       const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = { S: conds.condition.type };
-      expression = `${operator} (${keyAlt}, ${valueAlt})`;
+      expression = `${opr} (${keyAlt}, ${valueAlt})`;
       break;
     }
     case '=':
@@ -109,17 +116,17 @@ export const buildExpression = (conds: Conditions): Output => {
       const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = conds.condition.value;
       if (conds.condition.computedValue === 'size') {
-        expression = `size(${keyAlt}) ${operator} ${valueAlt}`;
+        expression = `size(${keyAlt}) ${opr} ${valueAlt}`;
         break;
       }
-      expression = `${keyAlt} ${operator} ${valueAlt}`;
+      expression = `${keyAlt} ${opr} ${valueAlt}`;
       break;
     }
     case 'begins_with':
     case 'contains': {
       const valueAlt = `:${conds.condition.attrName}`;
       values[valueAlt] = conds.condition.value;
-      expression = `${operator}(${keyAlt}, ${valueAlt})`;
+      expression = `${opr}(${keyAlt}, ${valueAlt})`;
       break;
     }
     case 'between': {
