@@ -28,15 +28,30 @@ describe(marshallValue.name, () => {
     const want: AttributeValue = { SS: value };
     expect(marshallValue(value)).toEqual(want);
   });
+  it('unmarshall L even string[]', () => {
+    const value = ['foo', 'bar'];
+    const want: AttributeValue = { L: value.map((v) => ({ S: v })) };
+    expect(marshallValue(value, 'L')).toEqual(want);
+  });
   it('unmarshalls NS', () => {
     const value = [123, 456];
     const want: AttributeValue = { NS: value.map(String) };
     expect(marshallValue(value)).toEqual(want);
   });
+  it('unmarshall L even number[]', () => {
+    const value = [123, 456];
+    const want: AttributeValue = { L: value.map((v) => ({ N: String(v) })) };
+    expect(marshallValue(value, 'L')).toEqual(want);
+  });
   it('unmarshalls BS', () => {
     const value = [new Uint8Array([1, 2, 3]), new Uint8Array([4, 5, 6])];
     const want: AttributeValue = { BS: value };
     expect(marshallValue(value)).toEqual(want);
+  });
+  it('unmarshall L even Uint8Array[]', () => {
+    const value = [new Uint8Array([1, 2, 3]), new Uint8Array([4, 5, 6])];
+    const want: AttributeValue = { L: value.map((v) => ({ B: v })) };
+    expect(marshallValue(value, 'L')).toEqual(want);
   });
   it('unmarshalls L', () => {
     const value = ['foo', 123, new Uint8Array([1, 2, 3])];

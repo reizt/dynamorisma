@@ -11,10 +11,11 @@ export const buildItem = <E extends EntConfig>(entName: string, entConfig: E, en
   item[entNameAttrName] = { S: entName };
 
   for (const propName in entConfig) {
+    const propConfig = entConfig[propName]!;
     const attrName = newAttributeName(entName, propName);
     if (!(propName in ent)) continue;
     const propValue = ent[propName as unknown as keyof InferEnt<E>];
-    item[attrName] = marshallValue(propValue);
+    item[attrName] = marshallValue(propValue, propConfig.type);
   }
 
   return item;

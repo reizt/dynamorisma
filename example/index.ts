@@ -11,10 +11,14 @@ const config = {
   },
 } satisfies DynmrSchema;
 
-const client = createDynmr({
+const client = createDynmr(config, {
   dynamodb: new DynamoDBClient({}),
   tableName: 'xxx',
-  schema: config,
+  options: {
+    log: {
+      query: true,
+    },
+  },
 });
 
 await client.user.collect({
