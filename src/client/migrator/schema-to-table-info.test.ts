@@ -23,7 +23,7 @@ describe(schemaToTableInfo.name, () => {
         { name: 'entX_propB', type: 'B' },
         { name: 'entX_propM', type: 'M' },
       ],
-      indexes: [{ name: 'entX_propS', hashKey: entNameAttrName, rangeKey: 'entX_propS', readCapacityUnits: 5, writeCapacityUnits: 2 }],
+      indexes: [{ name: 'entX_propS_gsi', hashKey: entNameAttrName, rangeKey: 'entX_propS', readCapacityUnits: 5, writeCapacityUnits: 2 }],
     };
     expect(actual).toEqual(want);
   });

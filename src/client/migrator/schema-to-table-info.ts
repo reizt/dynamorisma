@@ -1,4 +1,5 @@
 import { newAttributeName } from '../../schema/attribute';
+import { newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { DynmrSchema } from '../types/repo';
 import type { TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
@@ -16,8 +17,9 @@ export const schemaToTableInfo = (schema: DynmrSchema): TableInfo => {
       const attrName = newAttributeName(entName, propName);
       attributes.push({ name: attrName, type: propConfig.type });
       if (propConfig.gsi != null) {
+        const gsiName = newGsiName(entName, propName);
         indexes.push({
-          name: attrName,
+          name: gsiName,
           hashKey: entNameAttrName,
           rangeKey: attrName,
           readCapacityUnits: propConfig.gsi.readCapacityUnits,
