@@ -18,21 +18,21 @@ type Output = {
 };
 
 export const buildConditions = <E extends EntConfig>(input: Input<E>): Output => {
-  const filterConds: Conditions = { and: [] };
+  const keyConds: Conditions = { and: [] };
   const { filterConditions: subFilterConds, keyConditions: subKeyConds } = recursiveBuildConditions(input);
 
-  if (subFilterConds != null) {
-    if (subFilterConds.and != null) {
-      filterConds.and.push(...subFilterConds.and);
+  if (subKeyConds != null) {
+    if (subKeyConds.and != null) {
+      keyConds.and.push(...subKeyConds.and);
     }
-    if (subFilterConds.or != null) {
-      filterConds.and.push({ or: subFilterConds.or });
+    if (subKeyConds.or != null) {
+      keyConds.and.push({ or: subKeyConds.or });
     }
-    if (subFilterConds.not != null) {
-      filterConds.and.push({ not: subFilterConds.not });
+    if (subKeyConds.not != null) {
+      keyConds.and.push({ not: subKeyConds.not });
     }
-    if (subFilterConds.condition != null) {
-      filterConds.and.push({ condition: subFilterConds.condition });
+    if (subKeyConds.condition != null) {
+      keyConds.and.push({ condition: subKeyConds.condition });
     }
   }
 
@@ -42,9 +42,9 @@ export const buildConditions = <E extends EntConfig>(input: Input<E>): Output =>
     opr: '=',
     value: marshallValue(input.entName),
   };
-  filterConds.and.unshift({ condition: entNameCond });
+  keyConds.and.unshift({ condition: entNameCond });
 
-  return { filterConditions: filterConds, keyConditions: subKeyConds };
+  return { filterConditions: subFilterConds, keyConditions: keyConds };
 };
 
 const recursiveBuildConditions = <E extends EntConfig>(input: Input<E>): Output => {
