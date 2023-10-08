@@ -1,6 +1,6 @@
 {
   "name": "dynmr",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "repository": "git@github.com:reizt/dynmr.git",
   "author": "reizt <reizt.dev@gmail.com>",
   "license": "MIT",
@@ -8,6 +8,9 @@
   "main": "./cjs/index.js",
   "types": "./esm/index.d.ts",
   "module": "./esm/index.js",
+  "bin": {
+    "dynmr": "./cjs/src/cli/index.js"
+  },
   "exports": {
     ".": {
       "import": {
@@ -44,10 +47,12 @@
     "test:cov": "npm run vt run --coverage && open coverage/index.html"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.423.0"
+    "@aws-sdk/client-dynamodb": "^3.423.0",
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/node": "^20.6.2",
+    "@types/yargs": "^17.0.28",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "@vitest/coverage-v8": "^0.34.4",

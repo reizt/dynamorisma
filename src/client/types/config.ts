@@ -1,7 +1,7 @@
 export type EntConfig = Record<string, PropConfig>;
 export type PropConfig = {
   optional?: true;
-  gsi?: true;
+  gsi?: { readCapacityUnits?: number; writeCapacityUnits?: number };
 } & (
   | {
       type: 'S';

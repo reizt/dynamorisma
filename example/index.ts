@@ -4,9 +4,9 @@ import type { DynmrSchema } from '../src/client/types/repo';
 
 const config = {
   user: {
-    id: { type: 'S', gsi: true },
+    id: { type: 'S', gsi: { readCapacityUnits: 2, writeCapacityUnits: 2 } },
     name: { type: 'S', optional: true },
-    age: { type: 'N', gsi: true },
+    age: { type: 'N', gsi: {} },
     sex: { type: 'S', enum: ['male', 'female'] as const },
   },
 } satisfies DynmrSchema;

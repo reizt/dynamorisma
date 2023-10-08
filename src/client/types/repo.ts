@@ -24,7 +24,7 @@ export type CollectOut<E extends EntConfig> = {
   dynmrIds: string[];
 };
 export type AvailableGsiPropName<E extends EntConfig> = keyof {
-  [K in keyof E as E[K]['gsi'] extends true ? K : never]: K;
+  [K in keyof E as E[K]['gsi'] extends undefined ? never : K]: K;
 };
 
 export type PickIn<E extends EntConfig> = {
