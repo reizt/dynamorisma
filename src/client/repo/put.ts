@@ -21,5 +21,8 @@ export const put = async <E extends EntConfig>({ entName, entConfig, ent }: Args
 
   await ctx.dynamodb.send(command);
 
-  return dynmrId;
+  return {
+    ...ent,
+    __dynmrId: dynmrId,
+  };
 };

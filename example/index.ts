@@ -30,9 +30,9 @@ if (user == null) {
   throw new Error('user not found');
 }
 
-const dynmrId = await client.user.put({
+const updatedUser = await client.user.put({
   ...user,
   age: user.age + 1,
 });
 
-await client.user.del(dynmrId);
+await client.user.del(updatedUser.__dynmrId);

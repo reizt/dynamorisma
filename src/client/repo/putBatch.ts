@@ -3,7 +3,7 @@ import type { Context } from '../../context';
 import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig, InferEnt } from '../types/config';
-import type { EntRepo } from '../types/repo';
+import type { EntRepo, ReturnedEnt } from '../types/repo';
 
 type Args<E extends EntConfig> = {
   entName: string;
@@ -12,11 +12,11 @@ type Args<E extends EntConfig> = {
 };
 export const putBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['putBatch']> => {
   const items: Record<string, AttributeValue>[] = [];
-  const dynmrIds: string[] = [];
+  const out: ReturnedEnt<E>[] = [];
 
   for (const ent of ents) {
     const dynmrId = newDynmrId();
-    dynmrIds.push(dynmrId);
+    out.push({ ...ent, __dynmrId: dynmrId });
     const item = buildItem(entName, entConfig, ent, dynmrId);
     items.push(item);
   }
@@ -31,5 +31,5 @@ export const putBatch = async <E extends EntConfig>({ entName, entConfig, ents }
 
   await ctx.dynamodb.send(command);
 
-  return dynmrIds;
+  return out;
 };
