@@ -2,18 +2,18 @@ import { DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
 import { dynmrIdAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
-import type { DelIn, DelOut } from '../types/repo';
+import type { EntRepo } from '../types/repo';
 
 type Args<E extends EntConfig> = {
   entName: string;
   entConfig: E;
-  input: DelIn<E>;
+  dynmrId: string;
 };
-export const del = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<DelOut<E>> => {
+export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['del']>> => {
   const command = new DeleteItemCommand({
     TableName: ctx.tableName,
     Key: {
-      [dynmrIdAttrName]: { S: input.dynmrId },
+      [dynmrIdAttrName]: { S: dynmrId },
     },
   });
 

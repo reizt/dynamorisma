@@ -12,9 +12,9 @@ export const createEntRepo = <E extends EntConfig>(entName: string, entConfig: E
   return {
     collect: async (input) => await collect({ entName, entConfig, input }, ctx),
     pick: async (input) => await pick({ entName, entConfig, input }, ctx),
-    put: async (input) => await put({ entName, entConfig, input }, ctx),
-    putBatch: async (input) => await putBatch({ entName, entConfig, input }, ctx),
-    del: async (input) => await del({ entName, entConfig, input }, ctx),
-    delBatch: async (input) => await delBatch({ entName, entConfig, input }, ctx),
+    put: async (ent) => await put({ entName, entConfig, ent }, ctx),
+    putBatch: async (ents) => await putBatch({ entName, entConfig, ents }, ctx),
+    del: async (dynmrId) => await del({ entName, entConfig, dynmrId }, ctx),
+    delBatch: async (dynmrIds) => await delBatch({ entName, entConfig, dynmrIds }, ctx),
   };
 };

@@ -5,8 +5,8 @@ import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
 import { buildExpression } from '../builder/build-expression';
 import { minifyConditions } from '../builder/minify-conditions';
-import type { EntConfig } from '../types/config';
-import type { CollectIn, CollectOut } from '../types/repo';
+import type { EntConfig, InferEnt } from '../types/config';
+import type { CollectIn, DynmrIdInfo, EntRepo } from '../types/repo';
 import { unmarshallEnt } from '../utils/unmarshall';
 
 type Args<E extends EntConfig> = {
@@ -14,7 +14,7 @@ type Args<E extends EntConfig> = {
   entConfig: E;
   input: CollectIn<E>;
 };
-export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<CollectOut<E>> => {
+export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['collect']>> => {
   let ExpressionAttributeNames: Record<string, string> | undefined;
   let ExpressionAttributeValues: Record<string, AttributeValue> | undefined;
   let KeyConditionExpression: string | undefined;
@@ -55,7 +55,7 @@ export const collect = async <E extends EntConfig>({ entName, entConfig, input }
     return [];
   }
 
-  const entities: CollectOut<E> = items.map((item) => {
+  const entities: (InferEnt<E> & DynmrIdInfo)[] = items.map((item) => {
     const ent = unmarshallEnt(entName, entConfig, item);
     return {
       ...ent,

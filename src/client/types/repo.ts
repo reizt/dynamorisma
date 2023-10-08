@@ -6,12 +6,12 @@ export type Dynmr<S extends DynmrSchema> = {
 };
 
 export type EntRepo<E extends EntConfig> = {
-  collect: (input: CollectIn<E>) => Promise<CollectOut<E>>;
-  pick: (input: PickIn<E>) => Promise<PickOut<E>>;
-  put: (input: PutIn<E>) => Promise<PutOut<E>>;
-  putBatch: (input: PutManyIn<E>) => Promise<PutManyOut<E>>;
-  del: (input: DelIn<E>) => Promise<DelOut<E>>;
-  delBatch: (input: DelManyIn<E>) => Promise<DelManyOut<E>>;
+  collect: (input: CollectIn<E>) => Promise<(InferEnt<E> & DynmrIdInfo)[]>;
+  pick: (input: PickIn<E>) => Promise<(InferEnt<E> & DynmrIdInfo) | null>;
+  put: (input: InferEnt<E>) => Promise<string>;
+  putBatch: (input: InferEnt<E>[]) => Promise<string[]>;
+  del: (dynmrId: string) => Promise<void>;
+  delBatch: (dynmrIds: string[]) => Promise<void>;
 };
 
 export type DynmrIdInfo = { __dynmrId: string };
@@ -25,42 +25,10 @@ export type CollectIn<E extends EntConfig> = {
   scanLimit?: number;
   gsi?: AvailableGsiPropName<E>;
 };
-export type CollectOut<E extends EntConfig> = (InferEnt<E> & DynmrIdInfo)[];
 
 export type PickIn<E extends EntConfig> = {
   where: Where<E>;
 };
-export type PickOut<E extends EntConfig> = (InferEnt<E> & DynmrIdInfo) | null;
-
-export type PutIn<E extends EntConfig> = {
-  ent: InferEnt<E>;
-};
-// eslint-disable-next-line no-unused-vars
-export type PutOut<E extends EntConfig> = {
-  dynmrId: string;
-};
-
-export type PutManyIn<E extends EntConfig> = {
-  entities: InferEnt<E>[];
-};
-// eslint-disable-next-line no-unused-vars
-export type PutManyOut<E extends EntConfig> = {
-  dynmrIds: string[];
-};
-
-// eslint-disable-next-line no-unused-vars
-export type DelIn<E extends EntConfig> = {
-  dynmrId: string;
-};
-// eslint-disable-next-line no-unused-vars
-export type DelOut<E extends EntConfig> = void;
-
-// eslint-disable-next-line no-unused-vars
-export type DelManyIn<E extends EntConfig> = {
-  dynmrIds: string[];
-};
-// eslint-disable-next-line no-unused-vars
-export type DelManyOut<E extends EntConfig> = void;
 
 type Obj = Record<string, unknown>;
 type Nev<T extends Obj> = { [K in keyof T]?: undefined };
