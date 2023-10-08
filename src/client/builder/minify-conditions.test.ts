@@ -37,4 +37,11 @@ describe(minifyConditions.name, () => {
   test('shallow single or', () => {
     expect(minifyConditions({ or: [{ condition }] })).toEqual({ condition });
   });
+
+  test('removes empty and in and', () => {
+    expect(minifyConditions({ and: [{ condition }, { and: [] }] })).toEqual({ condition });
+  });
+  test('removes empty or in and', () => {
+    expect(minifyConditions({ and: [{ condition }, { or: [] }] })).toEqual({ condition });
+  });
 });

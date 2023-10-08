@@ -26,119 +26,182 @@ describe(buildConditions.name, () => {
     } satisfies EntConfig;
     type E = typeof entConfig;
 
+    const entNameCond: Conditions = {
+      condition: {
+        attrName: entNameAttrName,
+        opr: '=',
+        value: { S: entName },
+      },
+    };
+
     describe('filters', () => {
       test('eq', () => {
         const where: Where<E> = {
           propS: { eq: 'propS_eq' },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propS',
-                opr: '=',
-                value: { S: 'propS_eq' },
-              },
-            },
-          ],
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propS',
+            opr: '=',
+            value: { S: 'propS_eq' },
+          },
         };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('ne', () => {
         const where: Where<E> = {
           propS: { ne: 'propS_ne' },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propS',
-                opr: '<>',
-                value: { S: 'propS_ne' },
-              },
-            },
-          ],
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propS',
+            opr: '<>',
+            value: { S: 'propS_ne' },
+          },
         };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('beginsWith', () => {
         const where: Where<E> = {
           propS: { beginsWith: 'propS_beginsWith' },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propS',
-                opr: 'begins_with',
-                value: { S: 'propS_beginsWith' },
-              },
-            },
-          ],
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propS',
+            opr: 'begins_with',
+            value: { S: 'propS_beginsWith' },
+          },
         };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('contains', () => {
         const where: Where<E> = {
           propS: { contains: 'propS_contains' },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propS',
-                opr: 'contains',
-                value: { S: 'propS_contains' },
-              },
-            },
-          ],
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propS',
+            opr: 'contains',
+            value: { S: 'propS_contains' },
+          },
         };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('gt', () => {
         const where: Where<E> = {
           propN: { gt: 1 },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propN',
+            opr: '>',
+            value: { N: '1' },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
+      });
+      test('gte', () => {
+        const where: Where<E> = {
+          propN: { gte: 1 },
+        };
+        const actual = buildConditions({ entName, entConfig, where });
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propN',
+            opr: '>=',
+            value: { N: '1' },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
+      });
+      test('lt', () => {
+        const where: Where<E> = {
+          propN: { lt: 1 },
+        };
+        const actual = buildConditions({ entName, entConfig, where });
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propN',
+            opr: '<',
+            value: { N: '1' },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
+      });
+      test('lte', () => {
+        const where: Where<E> = {
+          propN: { lte: 1 },
+        };
+        const actual = buildConditions({ entName, entConfig, where });
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propN',
+            opr: '<=',
+            value: { N: '1' },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
+      });
+      test('between', () => {
+        const where: Where<E> = {
+          propN: { between: [1, 2] },
+        };
+        const actual = buildConditions({ entName, entConfig, where });
+        const wantKey: Conditions = entNameCond;
+        const wantFilter: Conditions = {
+          condition: {
+            attrName: 'Ent_propN',
+            opr: 'between',
+            valueFrom: { N: '1' },
+            valueTo: { N: '2' },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
+      });
+    });
+
+    describe('logical opers', () => {
+      test('AND', () => {
+        const where: Where<E> = {
+          AND: [{ propS: { eq: 'propS_eq' } }, { propN: { gt: 1 } }],
+        };
+        const actual = buildConditions({ entName, entConfig, where });
+        const wantKey: Conditions = {
+          condition: {
+            attrName: entNameAttrName,
+            opr: '=',
+            value: { S: entName },
+          },
+        };
+        const wantFilter: Conditions = {
           and: [
             {
               condition: {
-                attrName: entNameAttrName,
+                attrName: 'Ent_propS',
                 opr: '=',
-                value: { S: entName },
+                value: { S: 'propS_eq' },
               },
             },
             {
@@ -150,226 +213,65 @@ describe(buildConditions.name, () => {
             },
           ],
         };
-        expect(actual.filterConditions).toEqual(want);
-      });
-      test('gte', () => {
-        const where: Where<E> = {
-          propN: { gte: 1 },
-        };
-        const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propN',
-                opr: '>=',
-                value: { N: '1' },
-              },
-            },
-          ],
-        };
-        expect(actual.filterConditions).toEqual(want);
-      });
-      test('lt', () => {
-        const where: Where<E> = {
-          propN: { lt: 1 },
-        };
-        const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propN',
-                opr: '<',
-                value: { N: '1' },
-              },
-            },
-          ],
-        };
-        expect(actual.filterConditions).toEqual(want);
-      });
-      test('lte', () => {
-        const where: Where<E> = {
-          propN: { lte: 1 },
-        };
-        const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propN',
-                opr: '<=',
-                value: { N: '1' },
-              },
-            },
-          ],
-        };
-        expect(actual.filterConditions).toEqual(want);
-      });
-      test('between', () => {
-        const where: Where<E> = {
-          propN: { between: [1, 2] },
-        };
-        const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              condition: {
-                attrName: 'Ent_propN',
-                opr: 'between',
-                valueFrom: { N: '1' },
-                valueTo: { N: '2' },
-              },
-            },
-          ],
-        };
-        expect(actual.filterConditions).toEqual(want);
-      });
-    });
-
-    describe('logical opers', () => {
-      test('AND', () => {
-        const where: Where<E> = {
-          AND: [{ propS: { eq: 'propS_eq' } }, { propN: { gt: 1 } }],
-        };
-        const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              and: [
-                {
-                  condition: {
-                    attrName: 'Ent_propS',
-                    opr: '=',
-                    value: { S: 'propS_eq' },
-                  },
-                },
-              ],
-            },
-            {
-              and: [
-                {
-                  condition: {
-                    attrName: 'Ent_propN',
-                    opr: '>',
-                    value: { N: '1' },
-                  },
-                },
-              ],
-            },
-          ],
-        };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('OR', () => {
         const where: Where<E> = {
           OR: [{ propS: { eq: 'propS_eq' } }, { propN: { gt: 1 } }],
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
+        const wantKey: Conditions = {
+          condition: {
+            attrName: entNameAttrName,
+            opr: '=',
+            value: { S: entName },
+          },
+        };
+        const wantFilter: Conditions = {
+          or: [
             {
               condition: {
-                attrName: entNameAttrName,
+                attrName: 'Ent_propS',
                 opr: '=',
-                value: { S: entName },
+                value: { S: 'propS_eq' },
               },
             },
             {
-              or: [
-                {
-                  and: [
-                    {
-                      condition: {
-                        attrName: 'Ent_propS',
-                        opr: '=',
-                        value: { S: 'propS_eq' },
-                      },
-                    },
-                  ],
-                },
-                {
-                  and: [
-                    {
-                      condition: {
-                        attrName: 'Ent_propN',
-                        opr: '>',
-                        value: { N: '1' },
-                      },
-                    },
-                  ],
-                },
-              ],
+              condition: {
+                attrName: 'Ent_propN',
+                opr: '>',
+                value: { N: '1' },
+              },
             },
           ],
         };
-        expect(actual.filterConditions).toEqual(want);
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
       test('NOT', () => {
         const where: Where<E> = {
           NOT: { propS: { eq: 'propS_eq' } },
         };
         const actual = buildConditions({ entName, entConfig, where });
-        const want: Conditions = {
-          and: [
-            {
-              condition: {
-                attrName: entNameAttrName,
-                opr: '=',
-                value: { S: entName },
-              },
-            },
-            {
-              not: {
-                and: [
-                  {
-                    condition: {
-                      attrName: 'Ent_propS',
-                      opr: '=',
-                      value: { S: 'propS_eq' },
-                    },
-                  },
-                ],
-              },
-            },
-          ],
+        const wantKey: Conditions = {
+          condition: {
+            attrName: entNameAttrName,
+            opr: '=',
+            value: { S: entName },
+          },
         };
-        expect(actual.filterConditions).toEqual(want);
+        const wantFilter: Conditions = {
+          not: {
+            condition: {
+              attrName: 'Ent_propS',
+              opr: '=',
+              value: { S: 'propS_eq' },
+            },
+          },
+        };
+        expect(actual.keyConditions).toEqual(wantKey);
+        expect(actual.filterConditions).toEqual(wantFilter);
       });
     });
   });
@@ -391,6 +293,13 @@ describe(buildConditions.name, () => {
         and: [
           {
             condition: {
+              attrName: entNameAttrName,
+              opr: '=',
+              value: { S: entName },
+            },
+          },
+          {
+            condition: {
               attrName: 'Ent_propSgsi',
               opr: '=',
               value: { S: 'propS_eq' },
@@ -398,17 +307,7 @@ describe(buildConditions.name, () => {
           },
         ],
       };
-      const wantFilterConditions: Conditions = {
-        and: [
-          {
-            condition: {
-              attrName: entNameAttrName,
-              opr: '=',
-              value: { S: entName },
-            },
-          },
-        ],
-      };
+      const wantFilterConditions = undefined;
       expect(actual.filterConditions).toEqual(wantFilterConditions);
       expect(actual.keyConditions).toEqual(wantKeyConditions);
     });
@@ -418,25 +317,18 @@ describe(buildConditions.name, () => {
       };
       const actual = buildConditions({ entName, entConfig, where, gsiPropName: 'propSgsi' });
       const wantKeyConditions: Conditions = {
-        and: [],
+        condition: {
+          attrName: entNameAttrName,
+          opr: '=',
+          value: { S: entName },
+        },
       };
       const wantFilterConditions: Conditions = {
-        and: [
-          {
-            condition: {
-              attrName: entNameAttrName,
-              opr: '=',
-              value: { S: entName },
-            },
-          },
-          {
-            condition: {
-              attrName: 'Ent_propSgsi',
-              opr: 'contains',
-              value: { S: 'propS_contains' },
-            },
-          },
-        ],
+        condition: {
+          attrName: 'Ent_propSgsi',
+          opr: 'contains',
+          value: { S: 'propS_contains' },
+        },
       };
       expect(actual.filterConditions).toEqual(wantFilterConditions);
       expect(actual.keyConditions).toEqual(wantKeyConditions);

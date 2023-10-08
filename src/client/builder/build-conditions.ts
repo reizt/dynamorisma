@@ -4,6 +4,7 @@ import type { EntConfig } from '../types/config';
 import type { AvailableGsiPropName, Filter, Where } from '../types/repo';
 import { marshallValue } from '../utils/marshall';
 import type { Condition, ConditionWithoutAttrName, Conditions } from './build-expression';
+import { minifyConditions } from './minify-conditions';
 
 type Input<E extends EntConfig> = {
   entName: string;
@@ -44,7 +45,10 @@ export const buildConditions = <E extends EntConfig>(input: Input<E>): Output =>
   };
   keyConds.and.unshift({ condition: entNameCond });
 
-  return { filterConditions: subFilterConds, keyConditions: keyConds };
+  return {
+    filterConditions: minifyConditions(subFilterConds),
+    keyConditions: minifyConditions(keyConds),
+  };
 };
 
 const recursiveBuildConditions = <E extends EntConfig>(input: Input<E>): Output => {

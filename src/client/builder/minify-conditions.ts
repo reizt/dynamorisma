@@ -1,12 +1,16 @@
 import type { Conditions } from './build-expression';
 
-export const minifyConditions = (conds: Conditions): Conditions | undefined => {
+export const minifyConditions = (conds: Conditions | undefined): Conditions | undefined => {
+  if (conds == null) {
+    return undefined;
+  }
+
   if (conds.and != null) {
     if (conds.and.length === 0) {
       return undefined;
     }
     if (conds.and.length === 1) {
-      return minifyConditions(conds.and[0]!);
+      return minifyConditions(conds.and[0]);
     }
     const and: Conditions[] = [];
     for (const andCond of conds.and) {
@@ -15,8 +19,13 @@ export const minifyConditions = (conds: Conditions): Conditions | undefined => {
         and.push(minified);
       }
     }
-    conds.and = and;
-    return conds;
+    if (and.length === 0) {
+      return undefined;
+    }
+    if (and.length === 1) {
+      return and[0];
+    }
+    return { and };
   }
 
   if (conds.or != null) {
@@ -24,7 +33,7 @@ export const minifyConditions = (conds: Conditions): Conditions | undefined => {
       return undefined;
     }
     if (conds.or.length === 1) {
-      return minifyConditions(conds.or[0]!);
+      return minifyConditions(conds.or[0]);
     }
     const or: Conditions[] = [];
     for (const orCond of conds.or) {
@@ -33,8 +42,13 @@ export const minifyConditions = (conds: Conditions): Conditions | undefined => {
         or.push(minified);
       }
     }
-    conds.or = or;
-    return conds;
+    if (or.length === 0) {
+      return undefined;
+    }
+    if (or.length === 1) {
+      return or[0];
+    }
+    return { or };
   }
 
   if (conds.not != null) {
@@ -42,7 +56,7 @@ export const minifyConditions = (conds: Conditions): Conditions | undefined => {
     if (notConds == null) {
       return undefined;
     }
-    return conds;
+    return { not: notConds };
   }
 
   return conds;
