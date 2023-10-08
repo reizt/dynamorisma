@@ -52,11 +52,16 @@ export const collect = async <E extends EntConfig>({ entName, entConfig, input }
   const commandOutput = await ctx.dynamodb.send(command);
   const items = commandOutput.Items ?? [];
   if (items.length === 0) {
-    return { entities: [], dynmrIds: [] };
+    return [];
   }
 
-  const entities = items.map((item) => unmarshallEnt(entName, entConfig, item));
-  const dynmrIds = items.map((item) => item[dynmrIdAttrName]!.S!);
+  const entities: CollectOut<E> = items.map((item) => {
+    const ent = unmarshallEnt(entName, entConfig, item);
+    return {
+      ...ent,
+      __dynmrId: item[dynmrIdAttrName]!.S!,
+    };
+  });
 
-  return { entities, dynmrIds };
+  return entities;
 };

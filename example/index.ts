@@ -22,7 +22,7 @@ await client.user.collect({
   scanLimit: 10,
   gsi: 'id',
 });
-const { entity: user } = await client.user.pick({
+const user = await client.user.pick({
   where: { OR: [{ id: { eq: 'xxx' } }, { name: { contains: 'foo' } }] },
 });
 

@@ -14,26 +14,23 @@ export type EntRepo<E extends EntConfig> = {
   delBatch: (input: DelManyIn<E>) => Promise<DelManyOut<E>>;
 };
 
+export type DynmrIdInfo = { __dynmrId: string };
+
+export type AvailableGsiPropName<E extends EntConfig> = keyof {
+  [K in keyof E as E[K]['gsi'] extends undefined ? never : K]: K;
+};
+
 export type CollectIn<E extends EntConfig> = {
   where?: Where<E>;
   scanLimit?: number;
   gsi?: AvailableGsiPropName<E>;
 };
-export type CollectOut<E extends EntConfig> = {
-  entities: InferEnt<E>[];
-  dynmrIds: string[];
-};
-export type AvailableGsiPropName<E extends EntConfig> = keyof {
-  [K in keyof E as E[K]['gsi'] extends undefined ? never : K]: K;
-};
+export type CollectOut<E extends EntConfig> = (InferEnt<E> & DynmrIdInfo)[];
 
 export type PickIn<E extends EntConfig> = {
   where: Where<E>;
 };
-export type PickOut<E extends EntConfig> = {
-  entity: InferEnt<E> | null;
-  dynmrId: string | null;
-};
+export type PickOut<E extends EntConfig> = (InferEnt<E> & DynmrIdInfo) | null;
 
 export type PutIn<E extends EntConfig> = {
   ent: InferEnt<E>;

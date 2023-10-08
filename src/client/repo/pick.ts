@@ -10,9 +10,6 @@ type Args<E extends EntConfig> = {
 };
 export const pick = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['pick']> => {
   const collectIn: CollectIn<E> = { where: input.where, scanLimit: 1 };
-  const { entities, dynmrIds } = await collect({ entName, entConfig, input: collectIn }, ctx);
-  return {
-    entity: entities[0] ?? null,
-    dynmrId: dynmrIds[0] ?? null,
-  };
+  const entities = await collect({ entName, entConfig, input: collectIn }, ctx);
+  return entities[0] ?? null;
 };
