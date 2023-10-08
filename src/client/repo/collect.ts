@@ -1,6 +1,6 @@
-import { QueryCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
+import { QueryCommand } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import { newGsiName } from '../../schema/gsi';
+import { entNameGsiName, newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
 import { buildExpression } from '../builder/build-expression';
@@ -14,35 +14,24 @@ type Args<E extends EntConfig> = {
   input: CollectIn<E>;
 };
 export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['collect']>> => {
-  let ExpressionAttributeNames: Record<string, string> | undefined;
-  let ExpressionAttributeValues: Record<string, AttributeValue> | undefined;
-  let KeyConditionExpression: string | undefined;
-  let FilterExpression: string | undefined;
+  const out = buildConditions({
+    entName,
+    entConfig,
+    where: input.where ?? {},
+    gsiPropName: input.gsi,
+  });
+  const filterQ = out.filterConditions != null ? buildExpression(out.filterConditions) : undefined;
+  const keyQ = out.keyConditions != null ? buildExpression(out.keyConditions) : undefined;
 
-  if (input.where != null) {
-    const out = buildConditions({
-      entName,
-      entConfig,
-      where: input.where,
-      gsiPropName: input.gsi,
-    });
-    const filterQ = out.filterConditions != null ? buildExpression(out.filterConditions) : undefined;
-    const keyQ = out.keyConditions != null ? buildExpression(out.keyConditions) : undefined;
-    ExpressionAttributeNames = { ...filterQ?.names, ...keyQ?.names };
-    ExpressionAttributeValues = { ...filterQ?.values, ...keyQ?.values };
-    FilterExpression = filterQ?.expression;
-    KeyConditionExpression = keyQ?.expression;
-  }
-
-  const gsiName = input.gsi != null ? newGsiName(entName, input.gsi as string) : undefined;
+  const gsiName = input.gsi != null ? newGsiName(entName, input.gsi as string) : entNameGsiName;
 
   const command = new QueryCommand({
     TableName: ctx.tableName,
     IndexName: gsiName,
-    ExpressionAttributeNames,
-    ExpressionAttributeValues,
-    KeyConditionExpression,
-    FilterExpression,
+    ExpressionAttributeNames: { ...filterQ?.names, ...keyQ?.names },
+    ExpressionAttributeValues: { ...filterQ?.values, ...keyQ?.values },
+    KeyConditionExpression: keyQ?.expression,
+    FilterExpression: filterQ?.expression,
     Limit: input.scanLimit,
   });
 

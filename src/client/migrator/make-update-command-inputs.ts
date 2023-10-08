@@ -1,15 +1,21 @@
 import type {
   AttributeDefinition,
   CreateGlobalSecondaryIndexAction,
+  DeleteGlobalSecondaryIndexAction,
   UpdateGlobalSecondaryIndexAction,
   UpdateTableCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import type { TableDiff, TableInfo } from './types';
+import type { AttributeType, TableDiff, TableInfo } from './types';
 
-export const makeUpdateCommandInput = (tableDiff: TableDiff, newTable: TableInfo, ctx: Context): UpdateTableCommandInput => {
+const isAvailableAttributeType = (type: AttributeType): boolean => {
+  return ['S', 'N', 'B'].includes(type);
+};
+
+export const makeUpdateCommandInputs = (tableDiff: TableDiff, newTable: TableInfo, ctx: Context): UpdateTableCommandInput[] => {
   const AttributeDefinitions: AttributeDefinition[] = [];
   for (const attr of newTable.attributes) {
+    if (!isAvailableAttributeType(attr.type)) continue;
     AttributeDefinitions.push({
       AttributeName: attr.name,
       AttributeType: attr.type,
@@ -25,9 +31,9 @@ export const makeUpdateCommandInput = (tableDiff: TableDiff, newTable: TableInfo
     });
   }
 
-  const gsiDeletes: string[] = [];
+  const gsiDeletes: DeleteGlobalSecondaryIndexAction[] = [];
   for (const index of tableDiff.indexes.removed) {
-    gsiDeletes.push(index.name);
+    gsiDeletes.push({ IndexName: index.name });
   }
 
   const gsiUpdates: UpdateGlobalSecondaryIndexAction[] = [];
@@ -41,15 +47,28 @@ export const makeUpdateCommandInput = (tableDiff: TableDiff, newTable: TableInfo
     });
   }
 
-  const commandInput: UpdateTableCommandInput = {
-    TableName: ctx.tableName,
-    AttributeDefinitions,
-    GlobalSecondaryIndexUpdates: [
-      ...gsiCreates.map((create) => ({ Create: create })),
-      ...gsiDeletes.map((deleteName) => ({ Delete: { IndexName: deleteName } })),
-      ...gsiUpdates.map((update) => ({ Update: update })),
-    ],
-  };
+  const inputs: UpdateTableCommandInput[] = [];
+  for (const gsiCreate of gsiCreates) {
+    inputs.push({
+      TableName: ctx.tableName,
+      AttributeDefinitions,
+      GlobalSecondaryIndexUpdates: [{ Create: gsiCreate }],
+    });
+  }
+  for (const gsiDelete of gsiDeletes) {
+    inputs.push({
+      TableName: ctx.tableName,
+      AttributeDefinitions,
+      GlobalSecondaryIndexUpdates: [{ Delete: gsiDelete }],
+    });
+  }
+  if (gsiUpdates.length > 0) {
+    inputs.push({
+      TableName: ctx.tableName,
+      AttributeDefinitions,
+      GlobalSecondaryIndexUpdates: gsiUpdates.map((update) => ({ Update: update })),
+    });
+  }
 
-  return commandInput;
+  return inputs;
 };

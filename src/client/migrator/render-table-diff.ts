@@ -50,6 +50,9 @@ export const renderTableDiff = (schemaDiff: TableDiff): void => {
   for (const { name, oldType, newType } of schemaDiff.attributes.changed) {
     p(`  ~ ${attributeFormat(name, oldType, newType)}`, 'FgYellow');
   }
+  if (schemaDiff.attributes.added.length === 0 && schemaDiff.attributes.removed.length === 0 && schemaDiff.attributes.changed.length === 0) {
+    p('  ~ No changes', 'FgGray');
+  }
 
   p('Global Secondary Indexes:', 'BgBlue');
   p('    <indexName> (<hashKey>, <rangeKey>) R: <readCapacityUnits> W: <writeCapacityUnits>', 'FgGray');
@@ -79,6 +82,9 @@ export const renderTableDiff = (schemaDiff: TableDiff): void => {
       )}`,
       'FgYellow',
     );
+  }
+  if (schemaDiff.indexes.added.length === 0 && schemaDiff.indexes.removed.length === 0 && schemaDiff.indexes.changed.length === 0) {
+    p('  ~ No changes', 'FgGray');
   }
 };
 

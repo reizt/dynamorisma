@@ -1,7 +1,7 @@
 import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
-import { createInterface } from 'node:readline/promises';
 import type { Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import { askUntilValid } from '../utils/cli';
 
 const question = {
   billingMode: 'Select billing mode: 1) PAY_PER_REQUEST, 2) PROVISIONED: ',
@@ -12,17 +12,6 @@ const invalidMessage = {
   billingMode: 'Select 1 or 2.',
   readCapacityUnits: 'Enter a positive integer.',
   writeCapacityUnits: 'Enter a positive integer.',
-};
-
-const askUntilValid = async <V extends string>(question: string, validator: (input: string) => input is V, invalidMessage: string): Promise<V> => {
-  const readline = createInterface({ input: process.stdin, output: process.stdout });
-  let input = await readline.question(question);
-  while (!validator(input)) {
-    console.log(invalidMessage);
-    input = await readline.question(question);
-  }
-  readline.close();
-  return input;
 };
 
 export const createTableInteractive = async (ctx: Context): Promise<void> => {

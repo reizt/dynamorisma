@@ -1,9 +1,9 @@
 import { DynamoDBClient, type UpdateTableCommandInput } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import { makeUpdateCommandInput } from './make-update-command-input';
+import { makeUpdateCommandInputs } from './make-update-command-inputs';
 import type { TableDiff, TableInfo } from './types';
 
-describe(makeUpdateCommandInput.name, () => {
+describe(makeUpdateCommandInputs.name, () => {
   test('no changes', () => {
     const diff: TableDiff = {
       attributes: { added: [], removed: [], changed: [] },
@@ -26,15 +26,8 @@ describe(makeUpdateCommandInput.name, () => {
       dynamodb: new DynamoDBClient({}),
       tableName: 'test-table',
     };
-    const actual = makeUpdateCommandInput(diff, newTable, ctx);
-    const want: UpdateTableCommandInput = {
-      TableName: 'test-table',
-      AttributeDefinitions: [
-        { AttributeName: 'foo', AttributeType: 'S' },
-        { AttributeName: 'bar', AttributeType: 'N' },
-      ],
-      GlobalSecondaryIndexUpdates: [],
-    };
+    const actual = makeUpdateCommandInputs(diff, newTable, ctx);
+    const want: UpdateTableCommandInput[] = [];
     expect(actual).toEqual(want);
   });
   test('add index', () => {
@@ -69,26 +62,28 @@ describe(makeUpdateCommandInput.name, () => {
       dynamodb: new DynamoDBClient({}),
       tableName: 'test-table',
     };
-    const actual = makeUpdateCommandInput(diff, newTable, ctx);
-    const want: UpdateTableCommandInput = {
-      TableName: 'test-table',
-      AttributeDefinitions: [
-        { AttributeName: 'foo', AttributeType: 'S' },
-        { AttributeName: 'bar', AttributeType: 'N' },
-      ],
-      GlobalSecondaryIndexUpdates: [
-        {
-          Create: {
-            IndexName: 'test-index',
-            KeySchema: [
-              { AttributeName: 'foo', KeyType: 'HASH' },
-              { AttributeName: 'bar', KeyType: 'RANGE' },
-            ],
-            Projection: { ProjectionType: 'ALL' },
+    const actual = makeUpdateCommandInputs(diff, newTable, ctx);
+    const want: UpdateTableCommandInput[] = [
+      {
+        TableName: 'test-table',
+        AttributeDefinitions: [
+          { AttributeName: 'foo', AttributeType: 'S' },
+          { AttributeName: 'bar', AttributeType: 'N' },
+        ],
+        GlobalSecondaryIndexUpdates: [
+          {
+            Create: {
+              IndexName: 'test-index',
+              KeySchema: [
+                { AttributeName: 'foo', KeyType: 'HASH' },
+                { AttributeName: 'bar', KeyType: 'RANGE' },
+              ],
+              Projection: { ProjectionType: 'ALL' },
+            },
           },
-        },
-      ],
-    };
+        ],
+      },
+    ];
     expect(actual).toEqual(want);
   });
   test('remove index', () => {
@@ -117,19 +112,17 @@ describe(makeUpdateCommandInput.name, () => {
       dynamodb: new DynamoDBClient({}),
       tableName: 'test-table',
     };
-    const actual = makeUpdateCommandInput(diff, newTable, ctx);
-    const want: UpdateTableCommandInput = {
-      TableName: 'test-table',
-      AttributeDefinitions: [
-        { AttributeName: 'foo', AttributeType: 'S' },
-        { AttributeName: 'bar', AttributeType: 'N' },
-      ],
-      GlobalSecondaryIndexUpdates: [
-        {
-          Delete: { IndexName: 'test-index' },
-        },
-      ],
-    };
+    const actual = makeUpdateCommandInputs(diff, newTable, ctx);
+    const want: UpdateTableCommandInput[] = [
+      {
+        TableName: 'test-table',
+        AttributeDefinitions: [
+          { AttributeName: 'foo', AttributeType: 'S' },
+          { AttributeName: 'bar', AttributeType: 'N' },
+        ],
+        GlobalSecondaryIndexUpdates: [{ Delete: { IndexName: 'test-index' } }],
+      },
+    ];
     expect(actual).toEqual(want);
   });
   test('change index keys', () => {
@@ -175,23 +168,25 @@ describe(makeUpdateCommandInput.name, () => {
       dynamodb: new DynamoDBClient({}),
       tableName: 'test-table',
     };
-    const actual = makeUpdateCommandInput(diff, newTable, ctx);
-    const want: UpdateTableCommandInput = {
-      TableName: 'test-table',
-      AttributeDefinitions: [
-        { AttributeName: 'foo', AttributeType: 'S' },
-        { AttributeName: 'bar', AttributeType: 'N' },
-        { AttributeName: 'baz', AttributeType: 'B' },
-      ],
-      GlobalSecondaryIndexUpdates: [
-        {
-          Update: {
-            IndexName: 'test-index',
-            ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 2 },
+    const actual = makeUpdateCommandInputs(diff, newTable, ctx);
+    const want: UpdateTableCommandInput[] = [
+      {
+        TableName: 'test-table',
+        AttributeDefinitions: [
+          { AttributeName: 'foo', AttributeType: 'S' },
+          { AttributeName: 'bar', AttributeType: 'N' },
+          { AttributeName: 'baz', AttributeType: 'B' },
+        ],
+        GlobalSecondaryIndexUpdates: [
+          {
+            Update: {
+              IndexName: 'test-index',
+              ProvisionedThroughput: { ReadCapacityUnits: 2, WriteCapacityUnits: 2 },
+            },
           },
-        },
-      ],
-    };
+        ],
+      },
+    ];
 
     expect(actual).toEqual(want);
   });

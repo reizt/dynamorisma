@@ -9,7 +9,7 @@ describe(schemaToTableInfo.name, () => {
       entX: {
         propS: { type: 'S', gsi: { readCapacityUnits: 5, writeCapacityUnits: 2 } },
         propN: { type: 'N' },
-        propB: { type: 'B' },
+        propB: { type: 'B', gsi: { readCapacityUnits: 0, writeCapacityUnits: 0 } },
         propM: { type: 'M', props: { propMpropS: { type: 'S' } } },
       },
     };
@@ -19,11 +19,30 @@ describe(schemaToTableInfo.name, () => {
         { name: dynmrIdAttrName, type: 'S' },
         { name: entNameAttrName, type: 'S' },
         { name: 'entX_propS', type: 'S' },
-        { name: 'entX_propN', type: 'N' },
         { name: 'entX_propB', type: 'B' },
-        { name: 'entX_propM', type: 'M' },
       ],
-      indexes: [{ name: 'entX_propS_gsi', hashKey: entNameAttrName, rangeKey: 'entX_propS', readCapacityUnits: 5, writeCapacityUnits: 2 }],
+      indexes: [
+        {
+          name: 'entName_gsi',
+          hashKey: entNameAttrName,
+          readCapacityUnits: 0,
+          writeCapacityUnits: 0,
+        },
+        {
+          name: 'entX_propS_gsi',
+          hashKey: entNameAttrName,
+          rangeKey: 'entX_propS',
+          readCapacityUnits: 5,
+          writeCapacityUnits: 2,
+        },
+        {
+          name: 'entX_propB_gsi',
+          hashKey: entNameAttrName,
+          rangeKey: 'entX_propB',
+          readCapacityUnits: 0,
+          writeCapacityUnits: 0,
+        },
+      ],
     };
     expect(actual).toEqual(want);
   });
