@@ -4,6 +4,7 @@ import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig, InferEnt } from '../types/config';
 import type { EntRepo, ReturnedEnt } from '../types/repo';
+import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
   entName: string;
@@ -28,6 +29,10 @@ export const putBatch = async <E extends EntConfig>({ entName, entConfig, ents }
       })),
     },
   });
+
+  if (ctx.options?.log?.query === true) {
+    pretty(`Put Items: ${JSON.stringify(items, null, 2)}`, 'FgBlue');
+  }
 
   await ctx.dynamodb.send(command);
 

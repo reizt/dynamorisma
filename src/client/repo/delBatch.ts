@@ -3,6 +3,7 @@ import type { Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
+import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
   entName: string;
@@ -22,6 +23,10 @@ export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrI
       })),
     },
   });
+
+  if (ctx.options?.log?.query === true) {
+    pretty(`Delete Requests: ${JSON.stringify(command.input.RequestItems?.[ctx.tableName], null, 2)}`, 'FgBlue');
+  }
 
   await ctx.dynamodb.send(command);
 };

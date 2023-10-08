@@ -6,6 +6,7 @@ import { buildConditions } from '../builder/build-conditions';
 import { buildExpression } from '../builder/build-expression';
 import type { EntConfig, InferEnt } from '../types/config';
 import type { CollectIn, DynmrIdInfo, EntRepo } from '../types/repo';
+import { pretty } from '../utils/pretty-print';
 import { unmarshallEnt } from '../utils/unmarshall';
 
 type Args<E extends EntConfig> = {
@@ -34,6 +35,21 @@ export const collect = async <E extends EntConfig>({ entName, entConfig, input }
     FilterExpression: filterQ?.expression,
     Limit: input.scanLimit,
   });
+
+  if (ctx.options?.log?.query === true) {
+    if (command.input.KeyConditionExpression != null) {
+      pretty(`KeyConditionExpression: ${command.input.KeyConditionExpression}`, 'FgBlue');
+    }
+    if (command.input.FilterExpression != null) {
+      pretty(`FilterExpression: ${command.input.FilterExpression}`, 'FgBlue');
+    }
+    if (command.input.ExpressionAttributeNames != null) {
+      pretty(`ExpressionAttributeNames: ${JSON.stringify(command.input.ExpressionAttributeNames, null, 2)}`, 'FgBlue');
+    }
+    if (command.input.ExpressionAttributeValues != null) {
+      pretty(`ExpressionAttributeValues: ${JSON.stringify(command.input.ExpressionAttributeValues, null, 2)}`, 'FgBlue');
+    }
+  }
 
   const commandOutput = await ctx.dynamodb.send(command);
   const items = commandOutput.Items ?? [];
