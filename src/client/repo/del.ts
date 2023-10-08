@@ -1,6 +1,6 @@
 import { DeleteItemCommand } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import { dynmrIdAttrName } from '../../schema/id';
+import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
 
@@ -14,6 +14,7 @@ export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: 
     TableName: ctx.tableName,
     Key: {
       [dynmrIdAttrName]: { S: dynmrId },
+      [entNameAttrName]: { S: entName },
     },
   });
 

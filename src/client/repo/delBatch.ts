@@ -1,6 +1,6 @@
 import { BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import { dynmrIdAttrName } from '../../schema/id';
+import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
 
@@ -14,7 +14,10 @@ export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrI
     RequestItems: {
       [ctx.tableName]: dynmrIds.map((id) => ({
         DeleteRequest: {
-          Key: { [dynmrIdAttrName]: { S: id } },
+          Key: {
+            [dynmrIdAttrName]: { S: id },
+            [entNameAttrName]: { S: entName },
+          },
         },
       })),
     },
