@@ -6,16 +6,18 @@ export type Dynmr<S extends DynmrSchema> = {
 };
 
 export type EntRepo<E extends EntConfig> = {
-  collect: (input: CollectIn<E>) => Promise<ReturnedEnt<E>[]>;
-  pick: (input: PickIn<E>) => Promise<ReturnedEnt<E> | null>;
-  put: (input: InferEnt<E>) => Promise<ReturnedEnt<E>>;
-  putBatch: (input: InferEnt<E>[]) => Promise<ReturnedEnt<E>[]>;
+  collect: (input: CollectIn<E>) => Promise<InferEntWithId<E>[]>;
+  pick: (input: PickIn<E>) => Promise<InferEntWithId<E> | null>;
+  create: (input: InferEnt<E>) => Promise<InferEntWithId<E>>;
+  createBatch: (input: InferEnt<E>[]) => Promise<InferEntWithId<E>[]>;
+  update: (input: InferEntWithId<E>) => Promise<InferEntWithId<E>>;
+  updateBatch: (input: InferEntWithId<E>[]) => Promise<InferEntWithId<E>[]>;
   del: (dynmrId: string) => Promise<void>;
   delBatch: (dynmrIds: string[]) => Promise<void>;
 };
 
 export type DynmrIdInfo = { __dynmrId: string };
-export type ReturnedEnt<E extends EntConfig> = InferEnt<E> & DynmrIdInfo;
+export type InferEntWithId<E extends EntConfig> = InferEnt<E> & DynmrIdInfo;
 
 export type AvailableGsiPropName<E extends EntConfig> = keyof {
   [K in keyof E as E[K]['gsi'] extends undefined ? never : K]: K;

@@ -34,7 +34,7 @@ if (user == null) {
   throw new Error('user not found');
 }
 
-const updatedUser = await client.user.put({
+const updatedUser = await client.user.update({
   ...user,
   age: user.age + 1,
 });

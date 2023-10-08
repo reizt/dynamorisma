@@ -3,7 +3,7 @@ import type { Context } from '../../context';
 import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig, InferEnt } from '../types/config';
-import type { EntRepo, ReturnedEnt } from '../types/repo';
+import type { EntRepo, InferEntWithId } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
@@ -11,9 +11,9 @@ type Args<E extends EntConfig> = {
   entConfig: E;
   ents: InferEnt<E>[];
 };
-export const putBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['putBatch']> => {
+export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
   const items: Record<string, AttributeValue>[] = [];
-  const out: ReturnedEnt<E>[] = [];
+  const out: InferEntWithId<E>[] = [];
 
   for (const ent of ents) {
     const dynmrId = newDynmrId();

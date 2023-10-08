@@ -27,7 +27,14 @@ const client = createDynmr({
   schema: config,
 });
 
-const { entity: user, dynmrId } = await client.user.pick({
+await client.user.put({
+  id: 'xxx',
+  name: 'John Doe',
+  age: 25,
+  sex: 'male',
+});
+
+const user = await client.user.pick({
   where: { id: { eq: 'xxx' } },
 });
 
@@ -35,11 +42,9 @@ if (user == null) {
   throw new Error('user not found');
 }
 
-await client.user.put({
-  ent: {
-    ...user,
-    age: user.age + 1,
-  },
+await client.user.update({
+  ...user,
+  age: user.age + 1,
 });
 
 await client.user.del({ dynmrId });

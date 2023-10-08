@@ -11,7 +11,7 @@ type Args<E extends EntConfig> = {
   entConfig: E;
   ent: InferEnt<E>;
 };
-export const put = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['put']> => {
+export const create = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['update']> => {
   const dynmrId = newDynmrId();
   const item = buildItem(entName, entConfig, ent, dynmrId);
 
