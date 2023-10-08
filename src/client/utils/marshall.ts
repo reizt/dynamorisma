@@ -19,23 +19,23 @@ type TypedAttributeValue<V> = V extends string
 export const marshallValue = <V>(value: V, asType: AttributeType = '$unknown'): TypedAttributeValue<V> => {
   const shouldForce = (type: AttributeType): boolean => asType === type || asType === '$unknown';
 
-  if (shouldForce('NULL') && value == null) {
+  if (value == null) {
     return { NULL: true } as unknown as TypedAttributeValue<V>;
   }
 
-  if (shouldForce('S') && typeof value === 'string') {
+  if (typeof value === 'string') {
     return { S: value } as unknown as TypedAttributeValue<V>;
   }
 
-  if (shouldForce('N') && typeof value === 'number') {
+  if (typeof value === 'number') {
     return { N: String(value) } as unknown as TypedAttributeValue<V>;
   }
 
-  if (shouldForce('B') && value instanceof Uint8Array) {
+  if (value instanceof Uint8Array) {
     return { B: value } as unknown as TypedAttributeValue<V>;
   }
 
-  if (shouldForce('BOOL') && typeof value === 'boolean') {
+  if (typeof value === 'boolean') {
     return { BOOL: value } as unknown as TypedAttributeValue<V>;
   }
 
