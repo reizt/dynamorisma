@@ -27,7 +27,10 @@ export const unmarshallEnt = <E extends EntConfig>(entName: string, entConfig: E
   const ent: InferEnt<E> = {} as any;
   for (const propName in entConfig) {
     const attrName = newAttributeName(entName, propName);
-    ent[propName as unknown as keyof InferEnt<E>] = unmarshallValue(item[attrName] ?? { NULL: true });
+    const value = unmarshallValue(item[attrName] ?? { NULL: true });
+    if (value !== undefined) {
+      ent[propName as unknown as keyof InferEnt<E>] = value;
+    }
   }
   return ent;
 };
