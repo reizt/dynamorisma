@@ -1,5 +1,5 @@
 import type { Context } from '../context';
-import { createEntRepo } from './repo';
+import { createEntRepo } from './repo/index';
 import type { Dynmr, DynmrSchema } from './types/repo';
 
 export const createDynmr = <S extends DynmrSchema>(schema: S, ctx: Context): Dynmr<S> => {
