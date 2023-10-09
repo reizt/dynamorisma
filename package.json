@@ -31,9 +31,6 @@
     "build:cjs": "tsc -p tsconfig.cjs.json && echo '{\"type\": \"commonjs\"}' > .pkg/cjs/package.json",
     "build:esm": "tsc -p tsconfig.esm.json && echo '{\"type\": \"module\"}' > .pkg/esm/package.json",
     "clean": "for f in .pkg/*; do rm -rf $f; done",
-    "dev": "nodemon --exec \"run-s dev:build dev:start\" --watch src --ext ts --delay 0.2",
-    "dev:build": "node config/build.mjs development",
-    "dev:start": "node --enable-source-maps .build/development.js",
     "lint": "run-s prettier:l eslint:l tsc:l",
     "format": "run-s prettier:f eslint:f",
     "eslint:l": "eslint --ext .ts 'src/**'",
@@ -42,10 +39,9 @@
     "prettier:f": "prettier --write --log-level silent src",
     "tsc:l": "tsc --noEmit --outDir .build",
     "tsc:w": "tsc --noEmit --outDir .build --watch",
-    "vt": "vitest --config config/vitest.config.ts",
-    "test": "npm run vt run",
-    "test:watch": "npm run vt watch",
-    "test:cov": "npm run vt run --coverage && open coverage/index.html"
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:cov": "vitest run --coverage && open coverage/index.html"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.423.0",

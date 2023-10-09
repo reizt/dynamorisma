@@ -2,17 +2,19 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vitest/config';
 
+const rel = (path: string) => resolve(__dirname, path);
+
 export default defineConfig({
   test: {
     globals: true,
-    exclude: ['**/node_modules/**', '**/.pkg/**'],
+    include: [rel('./src/**/*.test.ts')],
     coverage: {
       provider: 'v8',
     },
   },
   resolve: {
     alias: {
-      '#': resolve(__dirname, '../src'),
+      '#': rel('./src'),
     },
   },
 });

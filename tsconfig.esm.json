@@ -1,7 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["config/*.ts", "example/**/*.ts"],
+  "include": ["src/**/*.ts", "index.ts"],
   "compilerOptions": {
+    "target": "ES2015",
+    "module": "ES2015",
+    "moduleResolution": "Bundler",
     "outDir": "./.pkg/esm",
     "incremental": false
   }

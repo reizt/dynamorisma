@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import yargs from 'yargs';
 import { syncSchema } from '../client/migrator/sync-schema';
 
-const args = yargs
+const args = yargs(process.argv)
   .command('sync', 'Sync the schema with the database')
   .options({
     schema: {

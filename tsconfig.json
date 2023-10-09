@@ -1,11 +1,11 @@
 {
-  "include": ["src/**/*.ts", "config/*.ts", "example/**/*.ts", "*.ts"],
+  "include": ["src/**/*.ts", "example/**/*.ts", "*.ts"],
   "exclude": ["node_modules", ".pkg"],
   "compilerOptions": {
     // target
-    "target": "ES2022",
-    "module": "ES2022",
-    "moduleResolution": "Node",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "types": ["vitest/globals"],
 
     // transpilation
@@ -14,13 +14,13 @@
     "incremental": true,
     "isolatedModules": true,
     "declaration": true,
+    "esModuleInterop": true,
 
     // diagnostics
     "diagnostics": true,
     "extendedDiagnostics": true,
 
-    // syntax
-    "esModuleInterop": true,
+    // type checking
     "skipLibCheck": true,
     "strict": true,
     "noImplicitReturns": true,

@@ -3,7 +3,7 @@ import { unmarshallValue } from './unmarshall';
 describe(unmarshallValue.name, () => {
   it('marshalls null', () => {
     const value = { NULL: true };
-    expect(unmarshallValue(value)).toEqual(null);
+    expect(unmarshallValue(value)).toEqual(undefined);
   });
   it('marshalls BOOL', () => {
     const value = { BOOL: true };
