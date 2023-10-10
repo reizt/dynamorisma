@@ -31,6 +31,8 @@ export type CollectIn<E extends EntConfig> = {
 
 export type PickIn<E extends EntConfig> = {
   where: Where<E>;
+  scanLimit?: number;
+  gsi?: AvailableGsiPropName<E>;
 };
 
 type Obj = Record<string, unknown>;
