@@ -20,7 +20,7 @@ export type DynmrIdInfo = { __dynmrId: string };
 export type InferEntWithId<E extends EntConfig> = InferEnt<E> & DynmrIdInfo;
 
 export type AvailableGsiPropName<E extends EntConfig> = keyof {
-  [K in keyof E as E[K]['gsi'] extends undefined ? never : K]: K;
+  [K in keyof E as E[K]['gsi'] extends Record<string, any> ? K : never]: K;
 };
 
 export type CollectIn<E extends EntConfig> = {
