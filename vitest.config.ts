@@ -12,9 +12,4 @@ export default defineConfig({
       provider: 'v8',
     },
   },
-  resolve: {
-    alias: {
-      '#': rel('./src'),
-    },
-  },
 });
