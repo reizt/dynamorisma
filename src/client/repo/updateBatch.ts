@@ -1,5 +1,5 @@
 import { BatchGetItemCommand, BatchWriteItemCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -12,12 +12,13 @@ type Args<E extends EntConfig> = {
   ents: InferEntWithId<E>[];
 };
 export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
+  const tableName = getTableName(ctx.tableName, entName);
   const items: Record<string, AttributeValue>[] = [];
   const out: InferEntWithId<E>[] = [];
 
   const batchGetItemCommand = new BatchGetItemCommand({
     RequestItems: {
-      [ctx.tableName]: {
+      [tableName]: {
         Keys: ents.map((ent) => ({
           [dynmrIdAttrName]: { S: ent.__dynmrId },
           [entNameAttrName]: { S: entName },
@@ -26,7 +27,7 @@ export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ent
     },
   });
   const output = await ctx.dynamodb.send(batchGetItemCommand);
-  const existingItems = output.Responses?.[ctx.tableName] ?? [];
+  const existingItems = output.Responses?.[tableName] ?? [];
   if (existingItems.length !== ents.length) {
     throw new Error(`Not all items found`);
   }
@@ -40,7 +41,7 @@ export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ent
 
   const batchWriteItemCommand = new BatchWriteItemCommand({
     RequestItems: {
-      [ctx.tableName]: items.map((item) => ({
+      [tableName]: items.map((item) => ({
         PutRequest: { Item: item },
       })),
     },

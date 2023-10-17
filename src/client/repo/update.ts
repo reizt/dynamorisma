@@ -1,5 +1,5 @@
 import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -12,11 +12,12 @@ type Args<E extends EntConfig> = {
   ent: InferEntWithId<E>;
 };
 export const update = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['update']> => {
+  const tableName = getTableName(ctx.tableName, entName);
   const dynmrId = ent.__dynmrId;
   const item = buildItem(entName, entConfig, ent, dynmrId);
 
   const getItemCommand = new GetItemCommand({
-    TableName: ctx.tableName,
+    TableName: tableName,
     Key: {
       [dynmrIdAttrName]: { S: dynmrId },
       [entNameAttrName]: { S: entName },
@@ -28,7 +29,7 @@ export const update = async <E extends EntConfig>({ entName, entConfig, ent }: A
   }
 
   const putItemCommand = new PutItemCommand({
-    TableName: ctx.tableName,
+    TableName: tableName,
     Item: item,
   });
 

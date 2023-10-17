@@ -1,5 +1,5 @@
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
@@ -27,7 +27,7 @@ export const collect = async <E extends EntConfig>({ entName, entConfig, input }
   const gsiName = input.gsi != null ? newGsiName(entName, input.gsi as string) : entNameGsiName;
 
   const command = new QueryCommand({
-    TableName: ctx.tableName,
+    TableName: getTableName(ctx.tableName, entName),
     IndexName: gsiName,
     ExpressionAttributeNames: { ...filterQ?.names, ...keyQ?.names },
     ExpressionAttributeValues: { ...filterQ?.values, ...keyQ?.values },

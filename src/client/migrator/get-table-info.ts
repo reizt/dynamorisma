@@ -1,16 +1,17 @@
 import { DescribeTableCommand, TableNotFoundException } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 import type { AttributeType, TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
 
 export const getTableInfo = async (ctx: Context): Promise<TableInfo | null> => {
   try {
+    const tableName = getTableName(ctx.tableName);
     const command = new DescribeTableCommand({
-      TableName: ctx.tableName,
+      TableName: tableName,
     });
     const output = await ctx.dynamodb.send(command);
     const table = output.Table;
     if (table == null) {
-      throw new Error(`Table ${ctx.tableName} does not exist`);
+      throw new Error(`Table ${tableName} does not exist`);
     }
 
     const attributes: TableInfoAttribute[] = [];

@@ -5,7 +5,7 @@ import type {
   UpdateGlobalSecondaryIndexAction,
   UpdateTableCommandInput,
 } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 import type { AttributeType, TableDiff, TableInfo } from './types';
 
 const isAvailableAttributeType = (type: AttributeType): boolean => {
@@ -48,23 +48,24 @@ export const makeUpdateCommandInputs = (tableDiff: TableDiff, newTable: TableInf
   }
 
   const inputs: UpdateTableCommandInput[] = [];
+  const tableName = getTableName(ctx.tableName);
   for (const gsiCreate of gsiCreates) {
     inputs.push({
-      TableName: ctx.tableName,
+      TableName: tableName,
       AttributeDefinitions,
       GlobalSecondaryIndexUpdates: [{ Create: gsiCreate }],
     });
   }
   for (const gsiDelete of gsiDeletes) {
     inputs.push({
-      TableName: ctx.tableName,
+      TableName: tableName,
       AttributeDefinitions,
       GlobalSecondaryIndexUpdates: [{ Delete: gsiDelete }],
     });
   }
   if (gsiUpdates.length > 0) {
     inputs.push({
-      TableName: ctx.tableName,
+      TableName: tableName,
       AttributeDefinitions,
       GlobalSecondaryIndexUpdates: gsiUpdates.map((update) => ({ Update: update })),
     });

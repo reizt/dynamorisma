@@ -1,6 +1,4 @@
-import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { askUntilValid } from '../utils/cli';
 
 const question = {
@@ -14,7 +12,13 @@ const invalidMessage = {
   writeCapacityUnits: 'Enter a positive integer.',
 };
 
-export const createTableInteractive = async (ctx: Context): Promise<void> => {
+type Output = {
+  billingMode: 'PAY_PER_REQUEST' | 'PROVISIONED';
+  readCapacityUnits?: number;
+  writeCapacityUnits?: number;
+};
+
+export const askCreateTableInputInteractively = async (ctx: Context): Promise<Output> => {
   const billingMode = await askUntilValid(
     question.billingMode,
     (input): input is '1' | '2' => {
@@ -32,7 +36,7 @@ export const createTableInteractive = async (ctx: Context): Promise<void> => {
       (input): input is string => {
         return /^[1-9]\d*$/.test(input);
       },
-      'Enter a positive integer.',
+      invalidMessage.readCapacityUnits,
     );
     writeCapacityUnits = await askUntilValid(
       question.writeCapacityUnits,
@@ -43,22 +47,9 @@ export const createTableInteractive = async (ctx: Context): Promise<void> => {
     );
   }
 
-  const command = new CreateTableCommand({
-    TableName: ctx.tableName,
-    AttributeDefinitions: [
-      { AttributeName: dynmrIdAttrName, AttributeType: 'S' },
-      { AttributeName: entNameAttrName, AttributeType: 'S' },
-    ],
-    KeySchema: [
-      { AttributeName: dynmrIdAttrName, KeyType: 'HASH' },
-      { AttributeName: entNameAttrName, KeyType: 'RANGE' },
-    ],
-    BillingMode: { 1: 'PAY_PER_REQUEST', 2: 'PROVISIONED' }[billingMode],
-    ProvisionedThroughput: {
-      ReadCapacityUnits: readCapacityUnits != null ? Number(readCapacityUnits) : undefined,
-      WriteCapacityUnits: writeCapacityUnits != null ? Number(writeCapacityUnits) : undefined,
-    },
-  });
-
-  await ctx.dynamodb.send(command);
+  return {
+    billingMode: ({ 1: 'PAY_PER_REQUEST', 2: 'PROVISIONED' } as const)[billingMode],
+    readCapacityUnits: readCapacityUnits != null ? Number(readCapacityUnits) : undefined,
+    writeCapacityUnits: writeCapacityUnits != null ? Number(writeCapacityUnits) : undefined,
+  };
 };

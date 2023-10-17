@@ -1,5 +1,5 @@
 import { DescribeTableCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import { getTableName, type Context } from '../../context';
 
 const secondsFormat = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -11,13 +11,14 @@ const secondsFormat = (seconds: number) => {
 };
 
 export const waitUntilGsiUpdateApplied = async (indexName: string, initialStatus: 'CREATING' | 'DELETING', ctx: Context): Promise<void> => {
+  const tableName = getTableName(ctx.tableName);
   const interval = 10_000;
 
   let retry = 0;
   let prevStatus: string | undefined = initialStatus;
   for (;;) {
     const epalsedSeconds = retry * (interval / 1000);
-    const { Table } = await ctx.dynamodb.send(new DescribeTableCommand({ TableName: ctx.tableName }));
+    const { Table } = await ctx.dynamodb.send(new DescribeTableCommand({ TableName: tableName }));
     const gsi = Table?.GlobalSecondaryIndexes?.find((i) => i.IndexName === indexName);
 
     if (prevStatus === 'CREATING') {
