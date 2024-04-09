@@ -1,6 +1,6 @@
-import { DescribeTableCommand, TableNotFoundException } from '@aws-sdk/client-dynamodb';
+import { DescribeTableCommand, ResourceNotFoundException, TableNotFoundException } from '@aws-sdk/client-dynamodb';
 import { getTableName, type Context } from '../../context';
-import type { AttributeType, TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
+import type { TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
 
 export const getTableInfo = async (ctx: Context): Promise<TableInfo | null> => {
   try {
@@ -18,7 +18,7 @@ export const getTableInfo = async (ctx: Context): Promise<TableInfo | null> => {
     for (const key of table.AttributeDefinitions ?? []) {
       attributes.push({
         name: key.AttributeName!,
-        type: key.AttributeType! as AttributeType,
+        type: key.AttributeType!,
       });
     }
 
@@ -35,7 +35,7 @@ export const getTableInfo = async (ctx: Context): Promise<TableInfo | null> => {
 
     return { attributes, indexes };
   } catch (err) {
-    if (err instanceof TableNotFoundException) {
+    if (err instanceof TableNotFoundException || err instanceof ResourceNotFoundException) {
       return null;
     }
     throw err;

@@ -1,9 +1,9 @@
-import type { AttributeValue } from '@aws-sdk/client-dynamodb';
+import type { AttributeValue, ScalarAttributeType } from '@aws-sdk/client-dynamodb';
 
 export type AttributeType = keyof AttributeValue;
 export type TableInfoAttribute = {
   name: string;
-  type: AttributeType;
+  type: ScalarAttributeType;
 };
 export type TableInfoIndex = {
   name: string;
@@ -23,8 +23,8 @@ export type TableDiff = {
     removed: TableInfoAttribute[];
     changed: {
       name: string;
-      oldType: AttributeType;
-      newType: AttributeType;
+      oldType: ScalarAttributeType;
+      newType: ScalarAttributeType;
     }[];
   };
   indexes: {

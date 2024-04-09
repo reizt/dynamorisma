@@ -15,10 +15,6 @@
     "isolatedModules": true,
     "esModuleInterop": true,
 
-    // diagnostics
-    "diagnostics": true,
-    "extendedDiagnostics": true,
-
     // type checking
     "skipLibCheck": true,
     "strict": true,

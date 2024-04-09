@@ -44,7 +44,7 @@
     "test:cov": "vitest run --coverage && open coverage/index.html"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.423.0",
+    "@aws-sdk/client-dynamodb": "^3.549.0",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

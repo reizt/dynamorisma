@@ -30,8 +30,14 @@ if (mode === 'dev') {
   opts.format = 'esm';
   opts.minify = false;
   opts.sourcemap = false;
+} else if (mode === 'cli') {
+  opts.outfile = rel('./.build/cli.js');
+  opts.format = 'cjs';
+  opts.minify = true;
+  opts.sourcemap = true;
+  opts.external = undefined;
 } else {
-  throw new Error(`Invalid mode: ${mode}`);
+  throw new Error(`Unknown mode: ${mode}`);
 }
 
 try {

@@ -27,10 +27,7 @@ describe(makeCreateCommandInput.name, () => {
       ],
       GlobalSecondaryIndexes: [],
       BillingMode: 'PAY_PER_REQUEST',
-      ProvisionedThroughput: {
-        ReadCapacityUnits: undefined,
-        WriteCapacityUnits: undefined,
-      },
+      ProvisionedThroughput: undefined,
     };
     expect(actual).toEqual(want);
   });

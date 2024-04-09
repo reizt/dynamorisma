@@ -27,7 +27,7 @@ const args = yargs(process.argv)
     if (args.schema == null || !existsSync(args.schema)) {
       throw new Error('Schema file does not exist');
     }
-    if (args.tableName == null) {
+    if (args['table-name'] == null) {
       throw new Error('Table name is required');
     }
     return true;

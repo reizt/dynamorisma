@@ -1,8 +1,13 @@
+import type { ScalarAttributeType } from '@aws-sdk/client-dynamodb';
 import { newAttributeName } from '../../schema/attribute';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { DynmrSchema } from '../types/repo';
-import type { TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
+import type { AttributeType, TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
+
+const isScalarType = (type: AttributeType): type is ScalarAttributeType => {
+  return ['B', 'S', 'N'].includes(type);
+};
 
 export const schemaToTableInfo = (schema: DynmrSchema): TableInfo => {
   const attributes: TableInfoAttribute[] = [];
@@ -19,6 +24,8 @@ export const schemaToTableInfo = (schema: DynmrSchema): TableInfo => {
 
       const attrName = newAttributeName(entName, propName);
       const gsiName = newGsiName(entName, propName);
+
+      if (!isScalarType(propConfig.type)) continue;
 
       attributes.push({ name: attrName, type: propConfig.type });
       indexes.push({

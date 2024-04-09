@@ -2,6 +2,7 @@ import type {
   AttributeDefinition,
   CreateGlobalSecondaryIndexAction,
   DeleteGlobalSecondaryIndexAction,
+  KeySchemaElement,
   UpdateGlobalSecondaryIndexAction,
   UpdateTableCommandInput,
 } from '@aws-sdk/client-dynamodb';
@@ -24,9 +25,10 @@ export const makeUpdateCommandInputs = (tableDiff: TableDiff, newTable: TableInf
 
   const gsiCreates: CreateGlobalSecondaryIndexAction[] = [];
   for (const index of tableDiff.indexes.added) {
+    const rangeKeySchema: KeySchemaElement[] = index.rangeKey != null ? [{ AttributeName: index.rangeKey, KeyType: 'RANGE' }] : [];
     gsiCreates.push({
       IndexName: index.name,
-      KeySchema: [{ AttributeName: index.hashKey, KeyType: 'HASH' }, ...(index.rangeKey != null ? [{ AttributeName: index.rangeKey, KeyType: 'RANGE' }] : [])],
+      KeySchema: [{ AttributeName: index.hashKey, KeyType: 'HASH' }, ...rangeKeySchema],
       Projection: { ProjectionType: 'ALL' },
     });
   }

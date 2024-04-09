@@ -23,9 +23,10 @@ export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySetti
 
   const GlobalSecondaryIndexes: GlobalSecondaryIndex[] = [];
   for (const gsi of table.indexes) {
+    const rangeKeySchema: KeySchemaElement[] = gsi.rangeKey != null ? [{ AttributeName: gsi.rangeKey, KeyType: 'RANGE' }] : [];
     GlobalSecondaryIndexes.push({
       IndexName: gsi.name,
-      KeySchema: [{ AttributeName: gsi.hashKey, KeyType: 'HASH' }, ...(gsi.rangeKey != null ? [{ AttributeName: gsi.rangeKey, KeyType: 'RANGE' }] : [])],
+      KeySchema: [{ AttributeName: gsi.hashKey, KeyType: 'HASH' }, ...rangeKeySchema],
       Projection: {
         ProjectionType: 'ALL',
       },
@@ -38,9 +39,12 @@ export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySetti
     KeySchema,
     GlobalSecondaryIndexes,
     BillingMode: capacity.billingMode,
-    ProvisionedThroughput: {
-      ReadCapacityUnits: capacity.readCapacityUnits,
-      WriteCapacityUnits: capacity.writeCapacityUnits,
-    },
+    ProvisionedThroughput:
+      capacity.readCapacityUnits != null || capacity.writeCapacityUnits != null
+        ? {
+            ReadCapacityUnits: capacity.readCapacityUnits,
+            WriteCapacityUnits: capacity.writeCapacityUnits,
+          }
+        : undefined,
   };
 };
