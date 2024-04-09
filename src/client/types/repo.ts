@@ -8,8 +8,8 @@ export type Dynmr<S extends DynmrSchema> = {
 export type EntRepo<E extends EntConfig> = {
   collect: (input: CollectIn<E>) => Promise<InferEntWithId<E>[]>;
   pick: (input: PickIn<E>) => Promise<InferEntWithId<E> | null>;
-  create: (input: InferEnt<E>) => Promise<InferEntWithId<E>>;
-  createBatch: (input: InferEnt<E>[]) => Promise<InferEntWithId<E>[]>;
+  create: (input: InferEntWithOptionalId<E>) => Promise<InferEntWithId<E>>;
+  createBatch: (input: InferEntWithOptionalId<E>[]) => Promise<InferEntWithId<E>[]>;
   update: (input: InferEntWithId<E>) => Promise<InferEntWithId<E>>;
   updateBatch: (input: InferEntWithId<E>[]) => Promise<InferEntWithId<E>[]>;
   del: (dynmrId: string) => Promise<void>;
@@ -17,6 +17,7 @@ export type EntRepo<E extends EntConfig> = {
 };
 
 export type DynmrIdInfo = { __dynmrId: string };
+export type InferEntWithOptionalId<E extends EntConfig> = InferEnt<E> & Partial<DynmrIdInfo>;
 export type InferEntWithId<E extends EntConfig> = InferEnt<E> & DynmrIdInfo;
 
 export type AvailableGsiPropName<E extends EntConfig> = keyof {

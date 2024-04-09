@@ -2,14 +2,14 @@ import { BatchWriteItemCommand, type AttributeValue } from '@aws-sdk/client-dyna
 import { getTableName, type Context } from '../../context';
 import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
-import type { EntConfig, InferEnt } from '../types/config';
-import type { EntRepo, InferEntWithId } from '../types/repo';
+import type { EntConfig } from '../types/config';
+import type { EntRepo, InferEntWithId, InferEntWithOptionalId } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
   entName: string;
   entConfig: E;
-  ents: InferEnt<E>[];
+  ents: InferEntWithOptionalId<E>[];
 };
 export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
   const tableName = getTableName(ctx.tableName, entName);
@@ -17,7 +17,7 @@ export const createBatch = async <E extends EntConfig>({ entName, entConfig, ent
   const out: InferEntWithId<E>[] = [];
 
   for (const ent of ents) {
-    const dynmrId = newDynmrId();
+    const dynmrId = ent.__dynmrId ?? newDynmrId();
     out.push({ ...ent, __dynmrId: dynmrId });
     const item = buildItem(entName, entConfig, ent, dynmrId);
     items.push(item);
