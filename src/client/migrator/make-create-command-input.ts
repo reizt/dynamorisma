@@ -1,5 +1,5 @@
 import type { AttributeDefinition, CreateTableCommandInput, GlobalSecondaryIndex, KeySchemaElement } from '@aws-sdk/client-dynamodb';
-import { type Context, getTableName } from '../../context';
+import type { Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { TableInfo } from './types';
 
@@ -34,7 +34,7 @@ export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySetti
 	}
 
 	return {
-		TableName: getTableName(ctx.tableName),
+		TableName: ctx.tableName,
 		AttributeDefinitions,
 		KeySchema,
 		GlobalSecondaryIndexes,

@@ -1,5 +1,5 @@
 import { type AttributeValue, BatchGetItemCommand, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
-import { type Context, getTableName } from '../../context';
+import type { Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -12,7 +12,7 @@ type Args<E extends EntConfig> = {
 	ents: InferEntWithId<E>[];
 };
 export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
-	const tableName = getTableName(ctx.tableName, entName);
+	const tableName = ctx.tableName;
 	const items: Record<string, AttributeValue>[] = [];
 	const out: InferEntWithId<E>[] = [];
 

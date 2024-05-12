@@ -1,5 +1,5 @@
 import { CreateTableCommand, UpdateTableCommand } from '@aws-sdk/client-dynamodb';
-import { type Context, getTableName } from '../../context';
+import type { Context } from '../../context';
 import type { DynmrSchema } from '../types/repo';
 import { confirm } from '../utils/cli';
 import { calcTableDiff } from './calc-table-diff';
@@ -13,7 +13,7 @@ import { tableDiffIsEmpty } from './table-diff-is-empty';
 import { waitUntilGsiUpdateApplied } from './wait-until-index-update-applied';
 
 export const syncSchema = async (schema: DynmrSchema, ctx: Context) => {
-	const tableName = getTableName(ctx.tableName);
+	const tableName = ctx.tableName;
 	let beforeTableInfo = await getTableInfo(ctx);
 	const tableExists = beforeTableInfo != null;
 	if (beforeTableInfo == null) {

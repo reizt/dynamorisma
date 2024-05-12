@@ -1,10 +1,10 @@
 import { DescribeTableCommand, ResourceNotFoundException, TableNotFoundException } from '@aws-sdk/client-dynamodb';
-import { type Context, getTableName } from '../../context';
+import type { Context } from '../../context';
 import type { TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
 
 export const getTableInfo = async (ctx: Context): Promise<TableInfo | null> => {
 	try {
-		const tableName = getTableName(ctx.tableName);
+		const tableName = ctx.tableName;
 		const command = new DescribeTableCommand({
 			TableName: tableName,
 		});
