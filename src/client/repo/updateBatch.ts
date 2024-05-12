@@ -7,51 +7,51 @@ import type { EntRepo, InferEntWithId } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
-  entName: string;
-  entConfig: E;
-  ents: InferEntWithId<E>[];
+	entName: string;
+	entConfig: E;
+	ents: InferEntWithId<E>[];
 };
 export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
-  const tableName = getTableName(ctx.tableName, entName);
-  const items: Record<string, AttributeValue>[] = [];
-  const out: InferEntWithId<E>[] = [];
+	const tableName = getTableName(ctx.tableName, entName);
+	const items: Record<string, AttributeValue>[] = [];
+	const out: InferEntWithId<E>[] = [];
 
-  const batchGetItemCommand = new BatchGetItemCommand({
-    RequestItems: {
-      [tableName]: {
-        Keys: ents.map((ent) => ({
-          [dynmrIdAttrName]: { S: ent.__dynmrId },
-          [entNameAttrName]: { S: entName },
-        })),
-      },
-    },
-  });
-  const output = await ctx.dynamodb.send(batchGetItemCommand);
-  const existingItems = output.Responses?.[tableName] ?? [];
-  if (existingItems.length !== ents.length) {
-    throw new Error('Not all items found');
-  }
+	const batchGetItemCommand = new BatchGetItemCommand({
+		RequestItems: {
+			[tableName]: {
+				Keys: ents.map((ent) => ({
+					[dynmrIdAttrName]: { S: ent.__dynmrId },
+					[entNameAttrName]: { S: entName },
+				})),
+			},
+		},
+	});
+	const output = await ctx.dynamodb.send(batchGetItemCommand);
+	const existingItems = output.Responses?.[tableName] ?? [];
+	if (existingItems.length !== ents.length) {
+		throw new Error('Not all items found');
+	}
 
-  for (const ent of ents) {
-    const dynmrId = ent.__dynmrId;
-    out.push({ ...ent, __dynmrId: dynmrId });
-    const item = buildItem(entName, entConfig, ent, dynmrId);
-    items.push(item);
-  }
+	for (const ent of ents) {
+		const dynmrId = ent.__dynmrId;
+		out.push({ ...ent, __dynmrId: dynmrId });
+		const item = buildItem(entName, entConfig, ent, dynmrId);
+		items.push(item);
+	}
 
-  const batchWriteItemCommand = new BatchWriteItemCommand({
-    RequestItems: {
-      [tableName]: items.map((item) => ({
-        PutRequest: { Item: item },
-      })),
-    },
-  });
+	const batchWriteItemCommand = new BatchWriteItemCommand({
+		RequestItems: {
+			[tableName]: items.map((item) => ({
+				PutRequest: { Item: item },
+			})),
+		},
+	});
 
-  if (ctx.options?.log?.query === true) {
-    pretty(`Put Items: ${JSON.stringify(items, null, 2)}`, 'FgBlue');
-  }
+	if (ctx.options?.log?.query === true) {
+		pretty(`Put Items: ${JSON.stringify(items, null, 2)}`, 'FgBlue');
+	}
 
-  await ctx.dynamodb.send(batchWriteItemCommand);
+	await ctx.dynamodb.send(batchWriteItemCommand);
 
-  return out;
+	return out;
 };

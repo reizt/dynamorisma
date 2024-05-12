@@ -7,35 +7,35 @@ import type { EntRepo, InferEntWithId, InferEntWithOptionalId } from '../types/r
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
-  entName: string;
-  entConfig: E;
-  ents: InferEntWithOptionalId<E>[];
+	entName: string;
+	entConfig: E;
+	ents: InferEntWithOptionalId<E>[];
 };
 export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
-  const tableName = getTableName(ctx.tableName, entName);
-  const items: Record<string, AttributeValue>[] = [];
-  const out: InferEntWithId<E>[] = [];
+	const tableName = getTableName(ctx.tableName, entName);
+	const items: Record<string, AttributeValue>[] = [];
+	const out: InferEntWithId<E>[] = [];
 
-  for (const ent of ents) {
-    const dynmrId = ent.__dynmrId ?? newDynmrId();
-    out.push({ ...ent, __dynmrId: dynmrId });
-    const item = buildItem(entName, entConfig, ent, dynmrId);
-    items.push(item);
-  }
+	for (const ent of ents) {
+		const dynmrId = ent.__dynmrId ?? newDynmrId();
+		out.push({ ...ent, __dynmrId: dynmrId });
+		const item = buildItem(entName, entConfig, ent, dynmrId);
+		items.push(item);
+	}
 
-  const command = new BatchWriteItemCommand({
-    RequestItems: {
-      [tableName]: items.map((item) => ({
-        PutRequest: { Item: item },
-      })),
-    },
-  });
+	const command = new BatchWriteItemCommand({
+		RequestItems: {
+			[tableName]: items.map((item) => ({
+				PutRequest: { Item: item },
+			})),
+		},
+	});
 
-  if (ctx.options?.log?.query === true) {
-    pretty(`Put Items: ${JSON.stringify(items, null, 2)}`, 'FgBlue');
-  }
+	if (ctx.options?.log?.query === true) {
+		pretty(`Put Items: ${JSON.stringify(items, null, 2)}`, 'FgBlue');
+	}
 
-  await ctx.dynamodb.send(command);
+	await ctx.dynamodb.send(command);
 
-  return out;
+	return out;
 };

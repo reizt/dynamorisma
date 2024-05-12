@@ -6,23 +6,23 @@ import type { EntRepo } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
-  entName: string;
-  entConfig: E;
-  dynmrId: string;
+	entName: string;
+	entConfig: E;
+	dynmrId: string;
 };
 export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['del']>> => {
-  const tableName = getTableName(ctx.tableName, entName);
-  const command = new DeleteItemCommand({
-    TableName: tableName,
-    Key: {
-      [dynmrIdAttrName]: { S: dynmrId },
-      [entNameAttrName]: { S: entName },
-    },
-  });
+	const tableName = getTableName(ctx.tableName, entName);
+	const command = new DeleteItemCommand({
+		TableName: tableName,
+		Key: {
+			[dynmrIdAttrName]: { S: dynmrId },
+			[entNameAttrName]: { S: entName },
+		},
+	});
 
-  if (ctx.options?.log?.query === true) {
-    pretty(`Delete Key: ${JSON.stringify(command.input.Key, null, 2)}`, 'FgBlue');
-  }
+	if (ctx.options?.log?.query === true) {
+		pretty(`Delete Key: ${JSON.stringify(command.input.Key, null, 2)}`, 'FgBlue');
+	}
 
-  await ctx.dynamodb.send(command);
+	await ctx.dynamodb.send(command);
 };

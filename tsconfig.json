@@ -1,28 +1,28 @@
 {
-  "include": ["src/**/*.ts", "example/**/*.ts", "*.ts"],
-  "exclude": ["node_modules", ".pkg"],
-  "compilerOptions": {
-    // target
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "types": ["vitest/globals"],
+	"include": ["src/**/*.ts", "example/**/*.ts", "*.ts"],
+	"exclude": ["node_modules", ".pkg"],
+	"compilerOptions": {
+		// target
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"types": ["vitest/globals"],
 
-    // transpilation
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
+		// transpilation
+		"resolveJsonModule": true,
+		"forceConsistentCasingInFileNames": true,
+		"incremental": true,
+		"isolatedModules": true,
+		"esModuleInterop": true,
 
-    // type checking
-    "skipLibCheck": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-    "noUnusedLocals": true,
-    "verbatimModuleSyntax": true
-  }
+		// type checking
+		"skipLibCheck": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		"noUnusedLocals": true,
+		"verbatimModuleSyntax": true
+	}
 }

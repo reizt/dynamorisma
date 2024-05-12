@@ -6,28 +6,28 @@ import type { EntRepo } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 
 type Args<E extends EntConfig> = {
-  entName: string;
-  entConfig: E;
-  dynmrIds: string[];
+	entName: string;
+	entConfig: E;
+	dynmrIds: string[];
 };
 export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['delBatch']>> => {
-  const tableName = getTableName(ctx.tableName, entName);
-  const command = new BatchWriteItemCommand({
-    RequestItems: {
-      [tableName]: dynmrIds.map((id) => ({
-        DeleteRequest: {
-          Key: {
-            [dynmrIdAttrName]: { S: id },
-            [entNameAttrName]: { S: entName },
-          },
-        },
-      })),
-    },
-  });
+	const tableName = getTableName(ctx.tableName, entName);
+	const command = new BatchWriteItemCommand({
+		RequestItems: {
+			[tableName]: dynmrIds.map((id) => ({
+				DeleteRequest: {
+					Key: {
+						[dynmrIdAttrName]: { S: id },
+						[entNameAttrName]: { S: entName },
+					},
+				},
+			})),
+		},
+	});
 
-  if (ctx.options?.log?.query === true) {
-    pretty(`Delete Requests: ${JSON.stringify(command.input.RequestItems?.[tableName], null, 2)}`, 'FgBlue');
-  }
+	if (ctx.options?.log?.query === true) {
+		pretty(`Delete Requests: ${JSON.stringify(command.input.RequestItems?.[tableName], null, 2)}`, 'FgBlue');
+	}
 
-  await ctx.dynamodb.send(command);
+	await ctx.dynamodb.send(command);
 };
