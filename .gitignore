@@ -5,5 +5,7 @@
 /coverage
 /yarn-error.log
 /*.env*
-/.DS_Store
 /example/mk
+
+*.tsbuildinfo
+.DS_Store
