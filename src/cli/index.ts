@@ -1,6 +1,6 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import yargs from 'yargs';
 import { syncSchema } from '../client/migrator/sync-schema';
 

@@ -1,5 +1,5 @@
-import { BatchGetItemCommand, BatchWriteItemCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type AttributeValue, BatchGetItemCommand, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
+import { type Context, getTableName } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -29,7 +29,7 @@ export const updateBatch = async <E extends EntConfig>({ entName, entConfig, ent
   const output = await ctx.dynamodb.send(batchGetItemCommand);
   const existingItems = output.Responses?.[tableName] ?? [];
   if (existingItems.length !== ents.length) {
-    throw new Error(`Not all items found`);
+    throw new Error('Not all items found');
   }
 
   for (const ent of ents) {

@@ -1,4 +1,4 @@
-import { DynamoDBClient, type DescribeTableCommandOutput } from '@aws-sdk/client-dynamodb';
+import { type DescribeTableCommandOutput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
 import { getTableInfo } from './get-table-info';
 import type { TableInfo } from './types';

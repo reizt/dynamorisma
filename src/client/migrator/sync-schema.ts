@@ -1,5 +1,5 @@
 import { CreateTableCommand, UpdateTableCommand } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 import type { DynmrSchema } from '../types/repo';
 import { confirm } from '../utils/cli';
 import { calcTableDiff } from './calc-table-diff';
@@ -18,7 +18,7 @@ export const syncSchema = async (schema: DynmrSchema, ctx: Context) => {
   const tableExists = beforeTableInfo != null;
   if (beforeTableInfo == null) {
     console.log(`Table ${tableName} does not exist. (region: ${await ctx.dynamodb.config.region()})`);
-    const createOk = await confirm(`Do you want to create it here?`);
+    const createOk = await confirm('Do you want to create it here?');
     if (!createOk) {
       console.log('Cancelled');
       return;
@@ -44,13 +44,7 @@ export const syncSchema = async (schema: DynmrSchema, ctx: Context) => {
     return;
   }
 
-  if (!tableExists) {
-    const tableInit = await askCreateTableInputInteractively(ctx);
-    const input = makeCreateCommandInput(afterTableInfo, tableInit, ctx);
-    const command = new CreateTableCommand(input);
-    console.log('Creating table...');
-    await ctx.dynamodb.send(command);
-  } else {
+  if (tableExists) {
     console.log('Applying changes...');
     const commandInputs = makeUpdateCommandInputs(tableDiff, afterTableInfo, ctx);
     if (commandInputs.length === 0) {
@@ -66,5 +60,11 @@ export const syncSchema = async (schema: DynmrSchema, ctx: Context) => {
         await waitUntilGsiUpdateApplied(progressingIndexName, initialStatus, ctx);
       }
     }
+  } else {
+    const tableInit = await askCreateTableInputInteractively(ctx);
+    const input = makeCreateCommandInput(afterTableInfo, tableInit, ctx);
+    const command = new CreateTableCommand(input);
+    console.log('Creating table...');
+    await ctx.dynamodb.send(command);
   }
 };

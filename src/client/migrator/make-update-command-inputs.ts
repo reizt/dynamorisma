@@ -6,7 +6,7 @@ import type {
   UpdateGlobalSecondaryIndexAction,
   UpdateTableCommandInput,
 } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 import type { AttributeType, TableDiff, TableInfo } from './types';
 
 const isAvailableAttributeType = (type: AttributeType): boolean => {

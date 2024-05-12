@@ -1,37 +1,33 @@
 import { build } from 'esbuild';
-import { resolve } from 'path';
 import pkg from './package.json' assert { type: 'json' };
-
-const parentDir = new URL('.', import.meta.url).pathname;
-const rel = (path) => resolve(parentDir, path);
 
 /** @type {import('esbuild').BuildOptions} */
 const opts = {
-  entryPoints: [rel('./index.ts')],
+  entryPoints: ['./index.ts'],
   target: 'es2022',
   platform: 'node',
   color: true,
   bundle: true,
-  external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.devDependencies || {})],
+  external: [...Object.keys(pkg.dependencies ?? {}), ...Object.keys(pkg.devDependencies ?? {})],
 };
 
 const mode = process.argv[2];
 if (mode === 'dev') {
-  opts.outfile = rel('./.build/dev.js');
+  opts.outfile = './.build/dev.js';
   opts.minify = false;
   opts.sourcemap = true;
 } else if (mode === 'cjs') {
-  opts.outfile = rel('./.pkg/cjs/index.js');
+  opts.outfile = './.pkg/cjs/index.js';
   opts.format = 'cjs';
   opts.minify = false;
   opts.sourcemap = false;
 } else if (mode === 'esm') {
-  opts.outfile = rel('./.pkg/esm/index.js');
+  opts.outfile = './.pkg/esm/index.js';
   opts.format = 'esm';
   opts.minify = false;
   opts.sourcemap = false;
 } else if (mode === 'cli') {
-  opts.outfile = rel('./.build/cli.js');
+  opts.outfile = './.build/cli.js';
   opts.format = 'cjs';
   opts.minify = true;
   opts.sourcemap = true;

@@ -64,12 +64,12 @@ export type Filter<P extends PropConfig> = {
       contains?: string;
     }
   : P extends { type: 'N' }
-  ? {
-      // DynamoDB supports gt, gte, lt, lte, between for number
-      gt?: InferProp<P>;
-      gte?: InferProp<P>;
-      lt?: InferProp<P>;
-      lte?: InferProp<P>;
-      between?: [InferProp<P>, InferProp<P>];
-    }
-  : {});
+    ? {
+        // DynamoDB supports gt, gte, lt, lte, between for number
+        gt?: InferProp<P>;
+        gte?: InferProp<P>;
+        lt?: InferProp<P>;
+        lte?: InferProp<P>;
+        between?: [InferProp<P>, InferProp<P>];
+      }
+    : {});

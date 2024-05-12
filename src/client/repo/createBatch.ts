@@ -1,5 +1,5 @@
-import { BatchWriteItemCommand, type AttributeValue } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type AttributeValue, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
+import { type Context, getTableName } from '../../context';
 import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';

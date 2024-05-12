@@ -1,5 +1,5 @@
 import type { AttributeDefinition, CreateTableCommandInput, GlobalSecondaryIndex, KeySchemaElement } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { TableInfo } from './types';
 

@@ -1,5 +1,5 @@
 import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -25,7 +25,7 @@ export const update = async <E extends EntConfig>({ entName, entConfig, ent }: A
   });
   const output = await ctx.dynamodb.send(getItemCommand);
   if (output.Item == null) {
-    throw new Error(`Item not found`);
+    throw new Error('Item not found');
   }
 
   const putItemCommand = new PutItemCommand({

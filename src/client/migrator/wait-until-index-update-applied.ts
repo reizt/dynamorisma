@@ -1,5 +1,5 @@
 import { DescribeTableCommand } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 
 const secondsFormat = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);

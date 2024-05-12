@@ -51,29 +51,29 @@ export type InferProp<P extends PropConfig> =
         ? R
         : string
       : P extends { type: 'N' }
-      ? P['enum'] extends readonly (infer R)[]
-        ? R
-        : number
-      : P extends { type: 'BOOL' }
-      ? boolean
-      : P extends { type: 'B' }
-      ? Uint8Array
-      : P extends { type: 'SS' }
-      ? P['enum'] extends readonly (infer R)[]
-        ? R[]
-        : string[]
-      : P extends { type: 'NS' }
-      ? P['enum'] extends readonly (infer R)[]
-        ? R[]
-        : number[]
-      : P extends { type: 'BS' }
-      ? Uint8Array[]
-      : P extends { type: 'L' }
-      ? InferProp<P['items']>[]
-      : P extends { type: 'M' }
-      ? {
-          [K in keyof P['props'] as P['props'][K]['optional'] extends true ? never : K]: InferProp<P['props'][K]>;
-        } & {
-          [K in keyof P['props'] as P['props'][K]['optional'] extends true ? K : never]?: InferProp<P['props'][K]>;
-        }
-      : never);
+        ? P['enum'] extends readonly (infer R)[]
+          ? R
+          : number
+        : P extends { type: 'BOOL' }
+          ? boolean
+          : P extends { type: 'B' }
+            ? Uint8Array
+            : P extends { type: 'SS' }
+              ? P['enum'] extends readonly (infer R)[]
+                ? R[]
+                : string[]
+              : P extends { type: 'NS' }
+                ? P['enum'] extends readonly (infer R)[]
+                  ? R[]
+                  : number[]
+                : P extends { type: 'BS' }
+                  ? Uint8Array[]
+                  : P extends { type: 'L' }
+                    ? InferProp<P['items']>[]
+                    : P extends { type: 'M' }
+                      ? {
+                          [K in keyof P['props'] as P['props'][K]['optional'] extends true ? never : K]: InferProp<P['props'][K]>;
+                        } & {
+                          [K in keyof P['props'] as P['props'][K]['optional'] extends true ? K : never]?: InferProp<P['props'][K]>;
+                        }
+                      : never);

@@ -1,5 +1,5 @@
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
-import { getTableName, type Context } from '../../context';
+import { type Context, getTableName } from '../../context';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';

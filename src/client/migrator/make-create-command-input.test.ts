@@ -1,7 +1,7 @@
-import { DynamoDBClient, type CreateTableCommandInput } from '@aws-sdk/client-dynamodb';
+import { type CreateTableCommandInput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import type { Context } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
-import { makeCreateCommandInput, type CapacitySettings } from './make-create-command-input';
+import { type CapacitySettings, makeCreateCommandInput } from './make-create-command-input';
 import type { TableInfo } from './types';
 
 describe(makeCreateCommandInput.name, () => {

@@ -5,16 +5,16 @@ type AttributeType = keyof AttributeValue;
 type TypedAttributeValue<V> = V extends string
   ? AttributeValue.SMember
   : V extends number
-  ? AttributeValue.NMember
-  : V extends boolean
-  ? AttributeValue.BOOLMember
-  : V extends Uint8Array
-  ? AttributeValue.BMember
-  : V extends any[]
-  ? AttributeValue.SSMember | AttributeValue.NSMember | AttributeValue.BSMember | AttributeValue.LMember
-  : V extends object
-  ? AttributeValue.MMember
-  : never;
+    ? AttributeValue.NMember
+    : V extends boolean
+      ? AttributeValue.BOOLMember
+      : V extends Uint8Array
+        ? AttributeValue.BMember
+        : V extends any[]
+          ? AttributeValue.SSMember | AttributeValue.NSMember | AttributeValue.BSMember | AttributeValue.LMember
+          : V extends object
+            ? AttributeValue.MMember
+            : never;
 
 export const marshallValue = <V>(value: V, asType: AttributeType = '$unknown'): TypedAttributeValue<V> => {
   const shouldForce = (type: AttributeType): boolean => asType === type || asType === '$unknown';
