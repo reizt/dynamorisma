@@ -1,5 +1,5 @@
 import { BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
@@ -10,7 +10,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	dynmrIds: string[];
 };
-export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['delBatch']>> => {
+export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['delBatch']>> => {
 	const tableName = ctx.tableName;
 	const command = new BatchWriteItemCommand({
 		RequestItems: {

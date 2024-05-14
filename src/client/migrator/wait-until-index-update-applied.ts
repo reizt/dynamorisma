@@ -1,5 +1,5 @@
 import { DescribeTableCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 
 const secondsFormat = (seconds: number) => {
 	const minutes = Math.floor(seconds / 60);
@@ -10,7 +10,7 @@ const secondsFormat = (seconds: number) => {
 	return `${minutes}m${restSeconds}s`;
 };
 
-export const waitUntilGsiUpdateApplied = async (indexName: string, initialStatus: 'CREATING' | 'DELETING', ctx: Context): Promise<void> => {
+export const waitUntilGsiUpdateApplied = async (indexName: string, initialStatus: 'CREATING' | 'DELETING', ctx: DynmrContext): Promise<void> => {
 	const tableName = ctx.tableName;
 	const interval = 10_000;
 

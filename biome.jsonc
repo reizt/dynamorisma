@@ -5,11 +5,11 @@
 	},
 	"files": {
 		"include": ["src", "*.*"],
-		"ignore": ["node_modules", ".git", ".pkg", ".build"]
+		"ignore": ["node_modules", ".git", "dist", "tmp", "lib"]
 	},
 	"formatter": {
 		"indentStyle": "tab",
-		"lineWidth": 160
+		"lineWidth": 200
 	},
 	"javascript": {
 		"formatter": {
@@ -23,11 +23,13 @@
 				"noDefaultExport": "off",
 				"useNamingConvention": "off",
 				"noNamespace": "off",
-				"noNonNullAssertion": "off",
-				"useBlockStatements": "off"
+				"noParameterProperties": "off",
+				"useBlockStatements": "off",
+				"noNonNullAssertion": "off"
 			},
 			"performance": {
-				"noBarrelFile": "off"
+				"noBarrelFile": "off",
+				"noReExportAll": "off"
 			},
 			"correctness": {
 				"noUndeclaredVariables": "off",
@@ -36,11 +38,12 @@
 			"suspicious": {
 				"useAwait": "off",
 				"noConsoleLog": "off",
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noEmptyBlockStatements": "off"
 			},
 			"complexity": {
-				"noExcessiveCognitiveComplexity": "off",
-				"noBannedTypes": "off"
+				"noBannedTypes": "off",
+				"noExcessiveCognitiveComplexity": "off"
 			}
 		}
 	}

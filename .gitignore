@@ -1,11 +1,6 @@
 /node_modules
-/.build
-/.pkg
+/lib
 /tmp
-/coverage
-/yarn-error.log
-/*.env*
-/example/mk
 
-*.tsbuildinfo
 .DS_Store
+*.env*

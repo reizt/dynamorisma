@@ -1,5 +1,5 @@
 import { type AttributeValue, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { newDynmrId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
@@ -11,7 +11,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	ents: InferEntWithOptionalId<E>[];
 };
-export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: Context): ReturnType<EntRepo<E>['updateBatch']> => {
+export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['updateBatch']> => {
 	const tableName = ctx.tableName;
 	const items: Record<string, AttributeValue>[] = [];
 	const out: InferEntWithId<E>[] = [];

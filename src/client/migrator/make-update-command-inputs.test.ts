@@ -1,5 +1,5 @@
 import { DynamoDBClient, type UpdateTableCommandInput } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { makeUpdateCommandInputs } from './make-update-command-inputs';
 import type { TableDiff, TableInfo } from './types';
 
@@ -22,7 +22,7 @@ describe(makeUpdateCommandInputs.name, () => {
 				},
 			],
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			dynamodb: new DynamoDBClient({}),
 			tableName: 'test-table',
 		};
@@ -58,7 +58,7 @@ describe(makeUpdateCommandInputs.name, () => {
 				},
 			],
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			dynamodb: new DynamoDBClient({}),
 			tableName: 'test-table',
 		};
@@ -108,7 +108,7 @@ describe(makeUpdateCommandInputs.name, () => {
 			],
 			indexes: [],
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			dynamodb: new DynamoDBClient({}),
 			tableName: 'test-table',
 		};
@@ -164,7 +164,7 @@ describe(makeUpdateCommandInputs.name, () => {
 				},
 			],
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			dynamodb: new DynamoDBClient({}),
 			tableName: 'test-table',
 		};

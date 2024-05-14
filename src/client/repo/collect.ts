@@ -1,5 +1,5 @@
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
 import { dynmrIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
@@ -14,7 +14,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	input: CollectIn<E>;
 };
-export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['collect']>> => {
+export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['collect']>> => {
 	const out = buildConditions({
 		entName,
 		entConfig,

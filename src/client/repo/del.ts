@@ -1,5 +1,5 @@
 import { DeleteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
@@ -10,7 +10,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	dynmrId: string;
 };
-export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: Context): Promise<ReturnType<EntRepo<E>['del']>> => {
+export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['del']>> => {
 	const tableName = ctx.tableName;
 	const command = new DeleteItemCommand({
 		TableName: tableName,

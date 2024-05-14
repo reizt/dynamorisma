@@ -1,5 +1,5 @@
 import { type CreateTableCommandInput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import { type CapacitySettings, makeCreateCommandInput } from './make-create-command-input';
 import type { TableInfo } from './types';
@@ -13,7 +13,7 @@ describe(makeCreateCommandInput.name, () => {
 		const capacity: CapacitySettings = {
 			billingMode: 'PAY_PER_REQUEST',
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			tableName: 'test',
 			dynamodb: new DynamoDBClient({}),
 		};
@@ -41,7 +41,7 @@ describe(makeCreateCommandInput.name, () => {
 			readCapacityUnits: 1,
 			writeCapacityUnits: 2,
 		};
-		const ctx: Context = {
+		const ctx: DynmrContext = {
 			tableName: 'test',
 			dynamodb: new DynamoDBClient({}),
 		};

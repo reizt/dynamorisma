@@ -1,5 +1,5 @@
 import type { AttributeDefinition, CreateTableCommandInput, GlobalSecondaryIndex, KeySchemaElement } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
 import type { TableInfo } from './types';
 
@@ -8,7 +8,7 @@ export type CapacitySettings = {
 	readCapacityUnits?: number;
 	writeCapacityUnits?: number;
 };
-export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySettings, ctx: Context): CreateTableCommandInput => {
+export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySettings, ctx: DynmrContext): CreateTableCommandInput => {
 	const AttributeDefinitions: AttributeDefinition[] = [];
 	const KeySchema: KeySchemaElement[] = [
 		{ AttributeName: dynmrIdAttrName, KeyType: 'HASH' },

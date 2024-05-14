@@ -1,10 +1,10 @@
 import { type DescribeTableCommandOutput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import type { Context } from '../../context';
+import type { DynmrContext } from '../../context';
 import { getTableInfo } from './get-table-info';
 import type { TableInfo } from './types';
 
 describe(getTableInfo.name, () => {
-	const ctx: Context = {
+	const ctx: DynmrContext = {
 		dynamodb: new DynamoDBClient({}),
 		tableName: 'test-table',
 	};
