@@ -1,4 +1,3 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { createDynmr } from '../src/client';
 import type { DynmrSchema } from '../src/client/types/repo';
 
@@ -12,7 +11,7 @@ const config = {
 } satisfies DynmrSchema;
 
 const client = createDynmr(config, {
-	dynamodb: new DynamoDBClient({}),
+	clientConfig: {},
 	tableName: 'xxx',
 	options: {
 		log: {
