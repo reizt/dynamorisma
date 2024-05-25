@@ -14,7 +14,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	input: CollectIn<E>;
 };
-export const collect = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['collect']>> => {
+export const $findMany = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['$findMany']>> => {
 	const out = buildConditions({
 		entName,
 		entConfig,

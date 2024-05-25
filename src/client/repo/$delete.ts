@@ -10,7 +10,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	dynmrId: string;
 };
-export const del = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['del']>> => {
+export const $delete = async <E extends EntConfig>({ entName, entConfig, dynmrId }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['$delete']>> => {
 	const tableName = ctx.tableName;
 	const command = new DeleteItemCommand({
 		TableName: tableName,

@@ -10,7 +10,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	dynmrIds: string[];
 };
-export const delBatch = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['delBatch']>> => {
+export const $deleteMany = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['$deleteMany']>> => {
 	const tableName = ctx.tableName;
 	const command = new BatchWriteItemCommand({
 		RequestItems: {

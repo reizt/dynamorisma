@@ -1,24 +1,24 @@
 import type { DynmrContext } from '../../context';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
-import { collect } from './collect';
-import { create } from './create';
-import { createBatch } from './createBatch';
-import { del } from './del';
-import { delBatch } from './delBatch';
-import { pick } from './pick';
-import { update } from './update';
-import { updateBatch } from './updateBatch';
+import { $create } from './$create';
+import { $createMany } from './$createMany';
+import { $delete } from './$delete';
+import { $deleteMany } from './$deleteMany';
+import { $findMany } from './$findMany';
+import { $findOne } from './$findOne';
+import { $update } from './$update';
+import { $updateMany } from './$updateMany';
 
 export const createEntRepo = <E extends EntConfig>(entName: string, entConfig: E, ctx: DynmrContext): EntRepo<E> => {
 	return {
-		collect: async (input) => await collect({ entName, entConfig, input }, ctx),
-		pick: async (input) => await pick({ entName, entConfig, input }, ctx),
-		create: async (ent) => await create({ entName, entConfig, ent }, ctx),
-		createBatch: async (ents) => await createBatch({ entName, entConfig, ents }, ctx),
-		update: async (ent) => await update({ entName, entConfig, ent }, ctx),
-		updateBatch: async (ents) => await updateBatch({ entName, entConfig, ents }, ctx),
-		del: async (dynmrId) => await del({ entName, entConfig, dynmrId }, ctx),
-		delBatch: async (dynmrIds) => await delBatch({ entName, entConfig, dynmrIds }, ctx),
+		$findMany: async (input) => await $findMany({ entName, entConfig, input }, ctx),
+		$findOne: async (input) => await $findOne({ entName, entConfig, input }, ctx),
+		$create: async (ent) => await $create({ entName, entConfig, ent }, ctx),
+		$createMany: async (ents) => await $createMany({ entName, entConfig, ents }, ctx),
+		$update: async (ent) => await $update({ entName, entConfig, ent }, ctx),
+		$updateMany: async (ents) => await $updateMany({ entName, entConfig, ents }, ctx),
+		$delete: async (dynmrId) => await $delete({ entName, entConfig, dynmrId }, ctx),
+		$deleteMany: async (dynmrIds) => await $deleteMany({ entName, entConfig, dynmrIds }, ctx),
 	};
 };

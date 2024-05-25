@@ -6,14 +6,14 @@ export type Dynmr<S extends DynmrSchema> = {
 };
 
 export type EntRepo<E extends EntConfig> = {
-	collect: (input: CollectIn<E>) => Promise<InferEntWithId<E>[]>;
-	pick: (input: PickIn<E>) => Promise<InferEntWithId<E> | null>;
-	create: (input: InferEntWithOptionalId<E>) => Promise<InferEntWithId<E>>;
-	createBatch: (input: InferEntWithOptionalId<E>[]) => Promise<InferEntWithId<E>[]>;
-	update: (input: InferEntWithId<E>) => Promise<InferEntWithId<E>>;
-	updateBatch: (input: InferEntWithId<E>[]) => Promise<InferEntWithId<E>[]>;
-	del: (dynmrId: string) => Promise<void>;
-	delBatch: (dynmrIds: string[]) => Promise<void>;
+	$findMany: (input: CollectIn<E>) => Promise<InferEntWithId<E>[]>;
+	$findOne: (input: PickIn<E>) => Promise<InferEntWithId<E> | null>;
+	$create: (input: InferEntWithOptionalId<E>) => Promise<InferEntWithId<E>>;
+	$createMany: (input: InferEntWithOptionalId<E>[]) => Promise<InferEntWithId<E>[]>;
+	$update: (input: InferEntWithId<E>) => Promise<InferEntWithId<E>>;
+	$updateMany: (input: InferEntWithId<E>[]) => Promise<InferEntWithId<E>[]>;
+	$delete: (dynmrId: string) => Promise<void>;
+	$deleteMany: (dynmrIds: string[]) => Promise<void>;
 };
 
 export type DynmrIdInfo = { __dynmrId: string };

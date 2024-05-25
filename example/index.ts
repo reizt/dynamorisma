@@ -20,12 +20,12 @@ const client = createDynmr(config, {
 	},
 });
 
-await client.user.collect({
+await client.user.$findMany({
 	where: { OR: [{ id: { eq: 'xxx' } }, { name: { contains: 'foo' } }] },
 	scanLimit: 10,
 	gsi: 'id',
 });
-const user = await client.user.pick({
+const user = await client.user.$findOne({
 	where: { OR: [{ id: { eq: 'xxx' } }, { name: { contains: 'foo' } }] },
 });
 
@@ -33,9 +33,9 @@ if (user == null) {
 	throw new Error('user not found');
 }
 
-const updatedUser = await client.user.update({
+const updatedUser = await client.user.$update({
 	...user,
 	age: user.age + 1,
 });
 
-await client.user.del(updatedUser.__dynmrId);
+await client.user.$delete(updatedUser.__dynmrId);

@@ -11,7 +11,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	ents: InferEntWithOptionalId<E>[];
 };
-export const createBatch = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['updateBatch']> => {
+export const $createMany = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['$updateMany']> => {
 	const tableName = ctx.tableName;
 	const items: Record<string, AttributeValue>[] = [];
 	const out: InferEntWithId<E>[] = [];
