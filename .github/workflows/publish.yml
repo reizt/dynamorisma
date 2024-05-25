@@ -8,17 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: node_modules-${{ hashFiles('pnpm-lock.yaml') }}
-          restore-keys: node_modules-
+          version: 8
+          run_install: false
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install -g pnpm
-      - run: pnpm install --frozen-lockfile
+          cache: pnpm
+      - run: pnpm install
       - run: npm run check
       - run: npm run build
       - run: npm publish --access public
