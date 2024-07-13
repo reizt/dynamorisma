@@ -1,7 +1,7 @@
 import type { EntConfig, InferEnt, InferProp, PropConfig } from './config';
 
-export type DynmrSchema = Record<string, EntConfig>;
-export type Dynmr<S extends DynmrSchema> = {
+export type DynamorismaSchema = Record<string, EntConfig>;
+export type Dynamorisma<S extends DynamorismaSchema> = {
 	[E in keyof S]: EntRepo<S[E]>;
 };
 
@@ -12,13 +12,13 @@ export type EntRepo<E extends EntConfig> = {
 	$createMany: (input: InferEntWithOptionalId<E>[]) => Promise<InferEntWithId<E>[]>;
 	$update: (input: InferEntWithId<E>) => Promise<InferEntWithId<E>>;
 	$updateMany: (input: InferEntWithId<E>[]) => Promise<InferEntWithId<E>[]>;
-	$delete: (dynmrId: string) => Promise<void>;
-	$deleteMany: (dynmrIds: string[]) => Promise<void>;
+	$delete: (dynamorismaId: string) => Promise<void>;
+	$deleteMany: (dynamorismaIds: string[]) => Promise<void>;
 };
 
-export type DynmrIdInfo = { __dynmrId: string };
-export type InferEntWithOptionalId<E extends EntConfig> = InferEnt<E> & Partial<DynmrIdInfo>;
-export type InferEntWithId<E extends EntConfig> = InferEnt<E> & DynmrIdInfo;
+export type DynamorismaIdInfo = { __dynamorismaId: string };
+export type InferEntWithOptionalId<E extends EntConfig> = InferEnt<E> & Partial<DynamorismaIdInfo>;
+export type InferEntWithId<E extends EntConfig> = InferEnt<E> & DynamorismaIdInfo;
 
 export type AvailableGsiPropName<E extends EntConfig> = keyof {
 	[K in keyof E as E[K]['gsi'] extends Record<string, any> ? K : never]: K;

@@ -1,6 +1,6 @@
 import type { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-export type DynmrContext = {
+export type DynamorismaContext = {
 	dynamodb: DynamoDBClient;
 	tableName: string;
 	options?: {

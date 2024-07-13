@@ -1,19 +1,19 @@
 import type { ScalarAttributeType } from '@aws-sdk/client-dynamodb';
 import { newAttributeName } from '../../schema/attribute';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
-import type { DynmrSchema } from '../types/repo';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaSchema } from '../types/repo';
 import type { AttributeType, TableInfo, TableInfoAttribute, TableInfoIndex } from './types';
 
 const isScalarType = (type: AttributeType): type is ScalarAttributeType => {
 	return ['B', 'S', 'N'].includes(type);
 };
 
-export const schemaToTableInfo = (schema: DynmrSchema): TableInfo => {
+export const schemaToTableInfo = (schema: DynamorismaSchema): TableInfo => {
 	const attributes: TableInfoAttribute[] = [];
 	const indexes: TableInfoIndex[] = [];
 
-	attributes.push({ name: dynmrIdAttrName, type: 'S' }, { name: entNameAttrName, type: 'S' });
+	attributes.push({ name: dynamorismaIdAttrName, type: 'S' }, { name: entNameAttrName, type: 'S' });
 	indexes.push({ name: entNameGsiName, hashKey: entNameAttrName, readCapacityUnits: 0, writeCapacityUnits: 0 });
 
 	for (const entName in schema) {

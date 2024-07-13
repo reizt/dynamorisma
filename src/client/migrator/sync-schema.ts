@@ -1,6 +1,6 @@
 import { CreateTableCommand, UpdateTableCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import type { DynmrSchema } from '../types/repo';
+import type { DynamorismaContext } from '../../context';
+import type { DynamorismaSchema } from '../types/repo';
 import { confirm } from '../utils/cli';
 import { calcTableDiff } from './calc-table-diff';
 import { askCreateTableInputInteractively } from './create-table-interactive';
@@ -12,7 +12,7 @@ import { schemaToTableInfo } from './schema-to-table-info';
 import { tableDiffIsEmpty } from './table-diff-is-empty';
 import { waitUntilGsiUpdateApplied } from './wait-until-index-update-applied';
 
-export const syncSchema = async (schema: DynmrSchema, ctx: DynmrContext) => {
+export const syncSchema = async (schema: DynamorismaSchema, ctx: DynamorismaContext) => {
 	const tableName = ctx.tableName;
 	let beforeTableInfo = await getTableInfo(ctx);
 	const tableExists = beforeTableInfo != null;

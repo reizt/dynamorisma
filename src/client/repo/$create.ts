@@ -1,6 +1,6 @@
 import { PutItemCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { newDynmrId } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { newDynamorismaId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
 import type { EntRepo, InferEntWithOptionalId } from '../types/repo';
@@ -11,10 +11,10 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	ent: InferEntWithOptionalId<E>;
 };
-export const $create = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['$update']> => {
+export const $create = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: DynamorismaContext): ReturnType<EntRepo<E>['$update']> => {
 	const tableName = ctx.tableName;
-	const dynmrId = ent.__dynmrId ?? newDynmrId();
-	const item = buildItem(entName, entConfig, ent, dynmrId);
+	const dynamorismaId = ent.__dynamorismaId ?? newDynamorismaId();
+	const item = buildItem(entName, entConfig, ent, dynamorismaId);
 
 	const command = new PutItemCommand({
 		TableName: tableName,
@@ -29,6 +29,6 @@ export const $create = async <E extends EntConfig>({ entName, entConfig, ent }: 
 
 	return {
 		...ent,
-		__dynmrId: dynmrId,
+		__dynamorismaId: dynamorismaId,
 	};
 };

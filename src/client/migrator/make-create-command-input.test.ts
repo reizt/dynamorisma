@@ -1,6 +1,6 @@
 import { type CreateTableCommandInput, DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import { type CapacitySettings, makeCreateCommandInput } from './make-create-command-input';
 import type { TableInfo } from './types';
 
@@ -13,7 +13,7 @@ describe(makeCreateCommandInput.name, () => {
 		const capacity: CapacitySettings = {
 			billingMode: 'PAY_PER_REQUEST',
 		};
-		const ctx: DynmrContext = {
+		const ctx: DynamorismaContext = {
 			tableName: 'test',
 			dynamodb: new DynamoDBClient({}),
 		};
@@ -22,7 +22,7 @@ describe(makeCreateCommandInput.name, () => {
 			TableName: 'test',
 			AttributeDefinitions: [{ AttributeName: 'foo', AttributeType: 'S' }],
 			KeySchema: [
-				{ AttributeName: dynmrIdAttrName, KeyType: 'HASH' },
+				{ AttributeName: dynamorismaIdAttrName, KeyType: 'HASH' },
 				{ AttributeName: entNameAttrName, KeyType: 'RANGE' },
 			],
 			GlobalSecondaryIndexes: [],
@@ -41,7 +41,7 @@ describe(makeCreateCommandInput.name, () => {
 			readCapacityUnits: 1,
 			writeCapacityUnits: 2,
 		};
-		const ctx: DynmrContext = {
+		const ctx: DynamorismaContext = {
 			tableName: 'test',
 			dynamodb: new DynamoDBClient({}),
 		};
@@ -49,7 +49,7 @@ describe(makeCreateCommandInput.name, () => {
 		const want: CreateTableCommandInput = {
 			TableName: 'test',
 			KeySchema: [
-				{ AttributeName: dynmrIdAttrName, KeyType: 'HASH' },
+				{ AttributeName: dynamorismaIdAttrName, KeyType: 'HASH' },
 				{ AttributeName: entNameAttrName, KeyType: 'RANGE' },
 			],
 			AttributeDefinitions: [{ AttributeName: 'foo', AttributeType: 'S' }],

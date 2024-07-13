@@ -1,4 +1,4 @@
-import type { DynmrContext } from '../../context';
+import type { DynamorismaContext } from '../../context';
 import { askUntilValid } from '../utils/cli';
 
 const question = {
@@ -18,7 +18,7 @@ type Output = {
 	writeCapacityUnits?: number;
 };
 
-export const askCreateTableInputInteractively = async (ctx: DynmrContext): Promise<Output> => {
+export const askCreateTableInputInteractively = async (ctx: DynamorismaContext): Promise<Output> => {
 	const billingMode = await askUntilValid(
 		question.billingMode,
 		(input): input is '1' | '2' => {

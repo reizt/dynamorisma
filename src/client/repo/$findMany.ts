@@ -1,11 +1,11 @@
 import { QueryCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
+import type { DynamorismaContext } from '../../context';
 import { entNameGsiName, newGsiName } from '../../schema/gsi';
-import { dynmrIdAttrName } from '../../schema/id';
+import { dynamorismaIdAttrName } from '../../schema/id';
 import { buildConditions } from '../builder/build-conditions';
 import { buildExpression } from '../builder/build-expression';
 import type { EntConfig, InferEnt } from '../types/config';
-import type { CollectIn, DynmrIdInfo, EntRepo } from '../types/repo';
+import type { CollectIn, DynamorismaIdInfo, EntRepo } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
 import { unmarshallEnt } from '../utils/unmarshall';
 
@@ -14,7 +14,7 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	input: CollectIn<E>;
 };
-export const $findMany = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['$findMany']>> => {
+export const $findMany = async <E extends EntConfig>({ entName, entConfig, input }: Args<E>, ctx: DynamorismaContext): Promise<ReturnType<EntRepo<E>['$findMany']>> => {
 	const out = buildConditions({
 		entName,
 		entConfig,
@@ -57,11 +57,11 @@ export const $findMany = async <E extends EntConfig>({ entName, entConfig, input
 		return [];
 	}
 
-	const entities: (InferEnt<E> & DynmrIdInfo)[] = items.map((item) => {
+	const entities: (InferEnt<E> & DynamorismaIdInfo)[] = items.map((item) => {
 		const ent = unmarshallEnt(entName, entConfig, item);
 		return {
 			...ent,
-			__dynmrId: item[dynmrIdAttrName]!.S!,
+			__dynamorismaId: item[dynamorismaIdAttrName]!.S!,
 		};
 	});
 

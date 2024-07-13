@@ -1,6 +1,6 @@
 import { GetItemCommand, PutItemCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
 import type { EntRepo, InferEntWithId } from '../types/repo';
@@ -11,15 +11,15 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	ent: InferEntWithId<E>;
 };
-export const $update = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['$update']> => {
+export const $update = async <E extends EntConfig>({ entName, entConfig, ent }: Args<E>, ctx: DynamorismaContext): ReturnType<EntRepo<E>['$update']> => {
 	const tableName = ctx.tableName;
-	const dynmrId = ent.__dynmrId;
-	const item = buildItem(entName, entConfig, ent, dynmrId);
+	const dynamorismaId = ent.__dynamorismaId;
+	const item = buildItem(entName, entConfig, ent, dynamorismaId);
 
 	const getItemCommand = new GetItemCommand({
 		TableName: tableName,
 		Key: {
-			[dynmrIdAttrName]: { S: dynmrId },
+			[dynamorismaIdAttrName]: { S: dynamorismaId },
 			[entNameAttrName]: { S: entName },
 		},
 	});
@@ -41,6 +41,6 @@ export const $update = async <E extends EntConfig>({ entName, entConfig, ent }: 
 
 	return {
 		...ent,
-		__dynmrId: dynmrId,
+		__dynamorismaId: dynamorismaId,
 	};
 };

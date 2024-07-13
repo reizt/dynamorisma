@@ -1,6 +1,6 @@
 import { type AttributeValue, BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { newDynmrId } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { newDynamorismaId } from '../../schema/id';
 import { buildItem } from '../builder/build-item';
 import type { EntConfig } from '../types/config';
 import type { EntRepo, InferEntWithId, InferEntWithOptionalId } from '../types/repo';
@@ -11,15 +11,15 @@ type Args<E extends EntConfig> = {
 	entConfig: E;
 	ents: InferEntWithOptionalId<E>[];
 };
-export const $createMany = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: DynmrContext): ReturnType<EntRepo<E>['$updateMany']> => {
+export const $createMany = async <E extends EntConfig>({ entName, entConfig, ents }: Args<E>, ctx: DynamorismaContext): ReturnType<EntRepo<E>['$updateMany']> => {
 	const tableName = ctx.tableName;
 	const items: Record<string, AttributeValue>[] = [];
 	const out: InferEntWithId<E>[] = [];
 
 	for (const ent of ents) {
-		const dynmrId = ent.__dynmrId ?? newDynmrId();
-		out.push({ ...ent, __dynmrId: dynmrId });
-		const item = buildItem(entName, entConfig, ent, dynmrId);
+		const dynamorismaId = ent.__dynamorismaId ?? newDynamorismaId();
+		out.push({ ...ent, __dynamorismaId: dynamorismaId });
+		const item = buildItem(entName, entConfig, ent, dynamorismaId);
 		items.push(item);
 	}
 

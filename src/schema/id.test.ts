@@ -1,8 +1,8 @@
-import { newDynmrId } from './id';
+import { newDynamorismaId } from './id';
 
-describe(newDynmrId.name, () => {
+describe(newDynamorismaId.name, () => {
 	it('generates a random string with the correct length', () => {
-		const id = newDynmrId();
+		const id = newDynamorismaId();
 		expect(id.length).toEqual(8);
 	});
 });

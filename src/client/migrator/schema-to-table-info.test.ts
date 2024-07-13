@@ -1,11 +1,11 @@
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
-import type { DynmrSchema } from '../types/repo';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaSchema } from '../types/repo';
 import { schemaToTableInfo } from './schema-to-table-info';
 import type { TableInfo } from './types';
 
 describe(schemaToTableInfo.name, () => {
 	it('should work', () => {
-		const schema: DynmrSchema = {
+		const schema: DynamorismaSchema = {
 			entX: {
 				propS: { type: 'S', gsi: { readCapacityUnits: 5, writeCapacityUnits: 2 } },
 				propN: { type: 'N' },
@@ -16,7 +16,7 @@ describe(schemaToTableInfo.name, () => {
 		const actual = schemaToTableInfo(schema);
 		const want: TableInfo = {
 			attributes: [
-				{ name: dynmrIdAttrName, type: 'S' },
+				{ name: dynamorismaIdAttrName, type: 'S' },
 				{ name: entNameAttrName, type: 'S' },
 				{ name: 'entX_propS', type: 'S' },
 				{ name: 'entX_propB', type: 'B' },

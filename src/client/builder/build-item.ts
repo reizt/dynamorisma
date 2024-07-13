@@ -1,13 +1,13 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { newAttributeName } from '../../schema/attribute';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig, InferEnt } from '../types/config';
 import { marshallValue } from '../utils/marshall';
 
-export const buildItem = <E extends EntConfig>(entName: string, entConfig: E, ent: InferEnt<E>, dynmrId: string): Record<string, AttributeValue> => {
+export const buildItem = <E extends EntConfig>(entName: string, entConfig: E, ent: InferEnt<E>, dynamorismaId: string): Record<string, AttributeValue> => {
 	const item: Record<string, AttributeValue> = {};
 
-	item[dynmrIdAttrName] = { S: dynmrId };
+	item[dynamorismaIdAttrName] = { S: dynamorismaId };
 	item[entNameAttrName] = { S: entName };
 
 	for (const propName in entConfig) {

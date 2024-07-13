@@ -1,4 +1,4 @@
-export const dynmrIdAttrName = '__dynmrId';
+export const dynamorismaIdAttrName = '__dynmrId';
 export const entNameAttrName = '__entName';
 
 const randomString = (chars: string[], len: number): string => {
@@ -8,4 +8,4 @@ const randomString = (chars: string[], len: number): string => {
 
 const chars = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'];
 
-export const newDynmrId = () => randomString(chars, 8);
+export const newDynamorismaId = () => randomString(chars, 8);

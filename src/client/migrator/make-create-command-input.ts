@@ -1,6 +1,6 @@
 import type { AttributeDefinition, CreateTableCommandInput, GlobalSecondaryIndex, KeySchemaElement } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import type { TableInfo } from './types';
 
 export type CapacitySettings = {
@@ -8,10 +8,10 @@ export type CapacitySettings = {
 	readCapacityUnits?: number;
 	writeCapacityUnits?: number;
 };
-export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySettings, ctx: DynmrContext): CreateTableCommandInput => {
+export const makeCreateCommandInput = (table: TableInfo, capacity: CapacitySettings, ctx: DynamorismaContext): CreateTableCommandInput => {
 	const AttributeDefinitions: AttributeDefinition[] = [];
 	const KeySchema: KeySchemaElement[] = [
-		{ AttributeName: dynmrIdAttrName, KeyType: 'HASH' },
+		{ AttributeName: dynamorismaIdAttrName, KeyType: 'HASH' },
 		{ AttributeName: entNameAttrName, KeyType: 'RANGE' },
 	];
 	for (const attr of table.attributes) {

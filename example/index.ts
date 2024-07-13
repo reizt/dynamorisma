@@ -1,5 +1,5 @@
-import { createDynmr } from '../src/client';
-import type { DynmrSchema } from '../src/client/types/repo';
+import { dynamorisma } from '../src/client';
+import type { DynamorismaSchema } from '../src/client/types/repo';
 
 const config = {
 	user: {
@@ -8,9 +8,9 @@ const config = {
 		age: { type: 'N', gsi: {} },
 		sex: { type: 'S', enum: ['male', 'female'] as const },
 	},
-} satisfies DynmrSchema;
+} satisfies DynamorismaSchema;
 
-const client = createDynmr(config, {
+const client = dynamorisma(config, {
 	clientConfig: {},
 	tableName: 'xxx',
 	options: {
@@ -38,4 +38,4 @@ const updatedUser = await client.user.$update({
 	age: user.age + 1,
 });
 
-await client.user.$delete(updatedUser.__dynmrId);
+await client.user.$delete(updatedUser.__dynamorismaId);

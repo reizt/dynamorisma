@@ -1,6 +1,6 @@
 import { BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import type { DynamorismaContext } from '../../context';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { EntRepo } from '../types/repo';
 import { pretty } from '../utils/pretty-print';
@@ -8,16 +8,16 @@ import { pretty } from '../utils/pretty-print';
 type Args<E extends EntConfig> = {
 	entName: string;
 	entConfig: E;
-	dynmrIds: string[];
+	dynamorismaIds: string[];
 };
-export const $deleteMany = async <E extends EntConfig>({ entName, entConfig, dynmrIds }: Args<E>, ctx: DynmrContext): Promise<ReturnType<EntRepo<E>['$deleteMany']>> => {
+export const $deleteMany = async <E extends EntConfig>({ entName, entConfig, dynamorismaIds }: Args<E>, ctx: DynamorismaContext): Promise<ReturnType<EntRepo<E>['$deleteMany']>> => {
 	const tableName = ctx.tableName;
 	const command = new BatchWriteItemCommand({
 		RequestItems: {
-			[tableName]: dynmrIds.map((id) => ({
+			[tableName]: dynamorismaIds.map((id) => ({
 				DeleteRequest: {
 					Key: {
-						[dynmrIdAttrName]: { S: id },
+						[dynamorismaIdAttrName]: { S: id },
 						[entNameAttrName]: { S: entName },
 					},
 				},

@@ -1,5 +1,5 @@
 import type { AttributeValue } from '@aws-sdk/client-dynamodb';
-import { dynmrIdAttrName, entNameAttrName } from '../../schema/id';
+import { dynamorismaIdAttrName, entNameAttrName } from '../../schema/id';
 import type { EntConfig, InferEnt } from '../types/config';
 import { buildItem } from './build-item';
 
@@ -14,11 +14,11 @@ describe(buildItem.name, () => {
 			foo: 'foo',
 			bar: 1,
 		};
-		const dynmrId = 'xxx';
+		const dynamorismaId = 'xxx';
 
-		const item = buildItem(entName, entConfig, ent, dynmrId);
+		const item = buildItem(entName, entConfig, ent, dynamorismaId);
 		const want: Record<string, AttributeValue> = {
-			[dynmrIdAttrName]: { S: dynmrId },
+			[dynamorismaIdAttrName]: { S: dynamorismaId },
 			[entNameAttrName]: { S: entName },
 			EntName_foo: { S: 'foo' },
 			EntName_bar: { N: '1' },

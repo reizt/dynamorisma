@@ -6,14 +6,14 @@ import type {
 	UpdateGlobalSecondaryIndexAction,
 	UpdateTableCommandInput,
 } from '@aws-sdk/client-dynamodb';
-import type { DynmrContext } from '../../context';
+import type { DynamorismaContext } from '../../context';
 import type { AttributeType, TableDiff, TableInfo } from './types';
 
 const isAvailableAttributeType = (type: AttributeType): boolean => {
 	return ['S', 'N', 'B'].includes(type);
 };
 
-export const makeUpdateCommandInputs = (tableDiff: TableDiff, newTable: TableInfo, ctx: DynmrContext): UpdateTableCommandInput[] => {
+export const makeUpdateCommandInputs = (tableDiff: TableDiff, newTable: TableInfo, ctx: DynamorismaContext): UpdateTableCommandInput[] => {
 	const AttributeDefinitions: AttributeDefinition[] = [];
 	for (const attr of newTable.attributes) {
 		if (!isAvailableAttributeType(attr.type)) continue;
