@@ -18,6 +18,8 @@ type Output = {
 	writeCapacityUnits?: number;
 };
 
+const POSITIVE_INTEGER_REGEX = /^[1-9]\d*$/;
+
 export const askCreateTableInputInteractively = async (ctx: DynamorismaContext): Promise<Output> => {
 	const billingMode = await askUntilValid(
 		question.billingMode,
@@ -34,14 +36,14 @@ export const askCreateTableInputInteractively = async (ctx: DynamorismaContext):
 		readCapacityUnits = await askUntilValid(
 			question.readCapacityUnits,
 			(input): input is string => {
-				return /^[1-9]\d*$/.test(input);
+				return POSITIVE_INTEGER_REGEX.test(input);
 			},
 			invalidMessage.readCapacityUnits,
 		);
 		writeCapacityUnits = await askUntilValid(
 			question.writeCapacityUnits,
 			(input): input is string => {
-				return /^[1-9]\d*$/.test(input);
+				return POSITIVE_INTEGER_REGEX.test(input);
 			},
 			invalidMessage.writeCapacityUnits,
 		);

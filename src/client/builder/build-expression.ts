@@ -149,6 +149,8 @@ export const buildExpression = (conds: Conditions): Output => {
 			expression = `${keyAlt} IN (${valueAlts.join(', ')})`;
 			break;
 		}
+		default:
+			throw new Error(`Unsupported condition operator: ${opr}`);
 	}
 
 	return disallowEmptyOutput({
