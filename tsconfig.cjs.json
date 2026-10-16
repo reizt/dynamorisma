@@ -4,7 +4,8 @@
 	"exclude": ["**/*.test.ts"],
 	"compilerOptions": {
 		"module": "CommonJS",
-		"types": [],
+		"types": ["node"],
+		"rootDir": "./src",
 		"outDir": "lib/cjs",
 		"declaration": false,
 		"verbatimModuleSyntax": false

@@ -4,7 +4,8 @@
 	"exclude": ["**/*.test.ts"],
 	"compilerOptions": {
 		"outDir": "lib/types",
-		"types": [],
+		"rootDir": "./src",
+		"types": ["node"],
 		"declaration": true,
 		"emitDeclarationOnly": true
 	}

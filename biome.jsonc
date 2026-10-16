@@ -1,11 +1,8 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"organizeImports": {
-		"enabled": true
-	},
+	"$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"files": {
-		"include": ["src", "*.*"],
-		"ignore": ["node_modules", ".git", "dist", "tmp", "lib"]
+		"includes": ["src/**", "*.json", "*.jsonc", "*.ts", "!lib", "!node_modules", "!dist", "!tmp"]
 	},
 	"formatter": {
 		"indentStyle": "tab",
@@ -18,7 +15,6 @@
 	},
 	"linter": {
 		"rules": {
-			"all": true,
 			"style": {
 				"noDefaultExport": "off",
 				"useNamingConvention": "off",
@@ -41,7 +37,6 @@
 			"suspicious": {
 				"useAwait": "off",
 				"noConsole": "off",
-				"noConsoleLog": "off",
 				"noExplicitAny": "off",
 				"noEmptyBlockStatements": "off"
 			},

@@ -3,7 +3,7 @@ import { entNameAttrName } from '../../schema/id';
 import type { EntConfig } from '../types/config';
 import type { AvailableGsiPropName, Filter, Where } from '../types/repo';
 import { marshallValue } from '../utils/marshall';
-import type { Condition, ConditionWithoutAttrName, Conditions } from './build-expression';
+import type { Condition, Conditions, ConditionWithoutAttrName } from './build-expression';
 import { minifyConditions } from './minify-conditions';
 
 type Input<E extends EntConfig> = {

@@ -4,7 +4,8 @@
 	"exclude": ["**/*.test.ts"],
 	"compilerOptions": {
 		"module": "ES2022",
-		"types": [],
+		"types": ["node"],
+		"rootDir": "./src",
 		"outDir": "lib/esm",
 		"declaration": false
 	}
